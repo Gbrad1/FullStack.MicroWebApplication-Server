@@ -7,13 +7,14 @@ spring:
     database: MySQL
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   datasource:
-    platform: postgres
-    url: jdbc:mysql://localhost:3306/videoLibrary?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: gbrad
-    password: kali
+    platform: mysql
+    url: jdbc:mysql://localhost:3306/videolibrary?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: hanlin
+    password: pass
     ##driverClassName: org.mysql.Driver
 ---
 profiles: prod
-spring: 
+spring:
+  jpa:
