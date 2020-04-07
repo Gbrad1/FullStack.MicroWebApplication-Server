@@ -10,11 +10,23 @@ spring:
       ddl-auto: create-drop
   datasource:
     platform: mysql
-    url: jdbc:mysql://localhost:3306/videolibrary?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: hanlin
-    password: pass
+    url: zipcodefullstack.ctneiu8xwepi.us-east-2.rds.amazonaws.com}:3306/FullStackVideo
+    username: DreamTeam
+    password: ZipCodeWilmington
     ##driverClassName: org.mysql.Driver
 ---
 profiles: prod
 spring:
   jpa:
+    database: MySQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    platform: mysql
+    url: zipcodefullstack.ctneiu8xwepi.us-east-2.rds.amazonaws.com}:3306/FullStackVideo
+    username: DreamTeam
+    password: ZipCodeWilmington
+    ##driverClassName: org.mysql.Driver
+---
+
