@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class UserController {
 
@@ -37,11 +35,6 @@ public class UserController {
     @PutMapping("/User/{id}")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User u) {
         return new ResponseEntity<>(service.update(id, u), HttpStatus.OK);
-    }
-
-    @PostMapping("/User/list")
-    public ResponseEntity<List<User>> addMultiple(List<User> list) {
-        return new ResponseEntity<>(service.create(list), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/User/{id}")

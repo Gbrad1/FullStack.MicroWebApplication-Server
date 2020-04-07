@@ -1,0 +1,13 @@
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/models/User.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/repositories/UserRepository.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/services/VideoService.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/repositories/VideoRepository.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/FullStackApplication.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/controllers/VideoController.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/controllers/UserController.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/services/UserService.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/services/CommentService.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/controllers/CommentController.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/models/Video.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/models/Comment.java
+/Users/gbradford/Documents/videoLibraryApp/FullStack.MicroWebApplication-Server/src/main/java/com/videolibrary/zipcode/fullstackapp/repositories/CommentRepository.java

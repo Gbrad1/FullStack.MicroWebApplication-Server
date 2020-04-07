@@ -3,7 +3,6 @@ target/
 .DS_Store
 !.mvn/wrapper/maven-wrapper.jar
 *.yml
-
 ### STS ###
 .apt_generated
 .classpath
@@ -11,13 +10,11 @@ target/
 .project
 .settings
 .springBeans
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
-
 ### NetBeans ###
 nbproject/private/
 build/
