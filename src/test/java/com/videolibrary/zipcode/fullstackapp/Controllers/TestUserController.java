@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * sure the controller is reaching out to our mack service and returning the correct information.
  * */
 
-
 @ExtendWith(SpringExtension.class) // Telling Junit to use it's spring extensions to talk to Spring.
 @SpringBootTest // This tells spring to load. When the test runs, it hits this annotation and makes the environment.
 @AutoConfigureMockMvc // This is what brings in Mockito
