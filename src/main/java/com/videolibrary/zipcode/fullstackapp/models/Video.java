@@ -11,21 +11,15 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String title;
+    private String url;
 
-    @Lob
-    @Nationalized
-    private String content;
+    public Video() {
+    }
 
-    @Lob
-    private byte[] details;
-
-    public Video() {}
-
-    public Video(String title, String content) {
+    public Video(String title, String content, String url) {
         this.title = title;
-        this.content = content;
+        this.url = url;
     }
 
     public Long getId() {
@@ -42,21 +36,5 @@ public class Video {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public byte[] getDetails() {
-        return details;
-    }
-
-    public void setDetails(byte[] details) {
-        this.details = details;
     }
 }

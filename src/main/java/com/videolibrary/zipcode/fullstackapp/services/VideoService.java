@@ -31,8 +31,6 @@ public class VideoService {
 
     public Video update(Long id, Video v) {
         Video video = videoRepository.getVideoById(id);
-        video.setContent(v.getContent());
-        video.setDetails(v.getDetails());
         video.setTitle(v.getTitle());
         videoRepository.save(video);
         return video;
