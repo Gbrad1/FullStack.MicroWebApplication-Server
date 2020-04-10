@@ -22,5 +22,10 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-/src/main/resources/
 
+/HELP.md
+/mvnw
+/mvnw.cmd
+
+/src/main/resources/
+/.idea/
