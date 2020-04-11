@@ -64,7 +64,41 @@ public class TestUserController {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.firstName", is("Winston")))
                 .andExpect(jsonPath("$.lastName", is("The Corgi")));
+    }
+
+    @Test
+    @DisplayName("CREATE /User/2 - Created")
+    public void testCreateUser() throws Exception {
+        User mockUser = new User(2L, "Archie", "Bradford");
+        doReturn(mockUser).when(userService).create(mockUser);
+        doReturn(Optional.of(mockUser)).when(userService).show(2L);
+
+       mockMvc.perform(get("/User/{id}", 2))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(jsonPath("$.id", is(2)))
+                .andExpect(jsonPath("$.firstName", is("Archie")))
+                .andExpect(jsonPath("$.lastName", is("Bradford")));
+
 
     }
 
+    @Test
+    @DisplayName("PUT /User/3 - Updated")
+    public void testPutUser() throws Exception {
+        User mockUser = new User(3L, "Wrong", "Name");
+        User mockUser2 = new User(3L, "Right", "Name");
+        doReturn(mockUser).when(userService).create(mockUser);
+        doReturn(mockUser).when(userService).update(3L, mockUser2);
+        doReturn(Optional.of(mockUser)).when(userService).show(3L);
+
+        mockMvc.perform(get("/User/{id}", 3))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+
+                .andExpect(jsonPath("$.id", is(3)))
+                .andExpect(jsonPath("$.firstName", is("Right")))
+                .andExpect(jsonPath("$.lastName", is("Name")));
+    }
 }
