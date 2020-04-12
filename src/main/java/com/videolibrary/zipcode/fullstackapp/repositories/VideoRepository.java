@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Long> {
     Video getVideoById(Long id);
+    boolean deleteVideoById(Long id);
 }
