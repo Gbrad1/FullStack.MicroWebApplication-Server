@@ -1,9 +1,6 @@
 package com.videolibrary.zipcode.fullstackapp.models;
 
-import org.hibernate.annotations.Nationalized;
-
 import javax.persistence.*;
-
 
 @Entity
 public class Video {

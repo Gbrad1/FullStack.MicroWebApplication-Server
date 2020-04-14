@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VideoService {
@@ -37,11 +38,11 @@ public class VideoService {
         return videoRepository.save(v);
     }
 
-    public Video show(Long id) {
-        return videoRepository.getVideoById(id);
+    public Optional<Video> findVideo(Long id) {
+        return videoRepository.findById(id);
     }
 
-    public List<Video> index() {
+    public List<Video> findAllVideos() {
         return videoRepository.findAll();
     }
 

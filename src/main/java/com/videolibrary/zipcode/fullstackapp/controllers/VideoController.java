@@ -21,12 +21,18 @@ public class VideoController {
 
     @GetMapping()
     public ResponseEntity<?> index() {
-        return new ResponseEntity<>(service.index(), HttpStatus.OK);
+        return new ResponseEntity<>(service.findAllVideos(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Video> show(@PathVariable Long id) {
-        return new ResponseEntity<>(service.show(id), HttpStatus.OK);
+    public ResponseEntity<?> show(@PathVariable Long id) {
+        return this.service.findVideo(id)
+                .map(video -> ResponseEntity
+                        .ok()
+                        .body (video))
+                .orElse(ResponseEntity
+                        .notFound()
+                        .build());
     }
 
     @PostMapping("create")
