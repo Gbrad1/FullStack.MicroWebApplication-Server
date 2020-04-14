@@ -5,13 +5,15 @@ import com.videolibrary.zipcode.fullstackapp.repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CommentService {
 
+    @Autowired
     private CommentRepository repository;
 
-    @Autowired
     public CommentService(CommentRepository userRepository) {
         this.repository = userRepository;
     }
@@ -24,7 +26,7 @@ public class CommentService {
         return repository.getCommentById(id);
     }
 
-    public Iterable<Comment> index() {
+    public List<Comment> index() {
         return repository.findAll();
     }
 
