@@ -43,7 +43,12 @@ public class UserController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User u) {
-        return new ResponseEntity<>(service.update(id, u), HttpStatus.OK);
+        User user = service.update(id, u);
+        try {
+            return ResponseEntity.created(new URI("update/" + user.getUser_Id())).body(u);
+        } catch (URISyntaxException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("updateFirstName/{id}")

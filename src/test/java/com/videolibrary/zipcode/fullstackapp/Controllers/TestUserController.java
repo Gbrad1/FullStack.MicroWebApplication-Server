@@ -91,7 +91,7 @@ public class TestUserController {
     }
 
     @Test
-    @DisplayName("PUT /User/3 - Updated")
+    @DisplayName("PUT /User/update/3 - Updated")
     public void testPutUser() throws Exception {
         User mockUser = new User(3L, "Wrong", "Name");
         User updatedMockUser = new User(3L, "Right", "Name");
@@ -100,7 +100,7 @@ public class TestUserController {
         * the same as the one that we are mocking. The comparison uses the address which is different just like hashcoding.
         * We pass it any to bypass the comparison of hashcodes.
         * */
-        given(userService.update(3L, mockUser)).willReturn(updatedMockUser);
+        given(userService.update(1L, mockUser)).willReturn(updatedMockUser);
 
         mockMvc.perform(put("/user/update/{id}", 3).contentType(MediaType.APPLICATION_JSON).content(asJsonString(mockUser)))
                 .andExpect(status().isOk())
@@ -111,6 +111,39 @@ public class TestUserController {
                 .andExpect(jsonPath("$.lastName", is("Name")));
     }
 
+    @Test
+    @DisplayName("PUT /user/updateFirstName/1 - updated first name")
+    public void testUpdateFirstName() throws Exception {
+        User mockUser = new User(1L, "Wrong", "Name");
+        User updatedMockUser = new User(1L, "Right", "Name");
+
+        given(userService.updateFirstName(1L, any())).willReturn(updatedMockUser);
+
+        mockMvc.perform(put("/user/updateFirstName/{id}", 3).contentType(MediaType.APPLICATION_JSON).content(asJsonString(mockUser)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
+                .andExpect(jsonPath("$.user_Id", is(1)))
+                .andExpect(jsonPath("$.firstName", is("Right")))
+                .andExpect(jsonPath("$.lastName", is("Name")));
+    }
+
+    @Test
+    @DisplayName("PUT /user/updateLastName/1 - updated last name")
+    public void testUpdateLastName() throws Exception {
+        User mockUser = new User(1L, "Name", "Wrong");
+        User updatedMockUser = new User(1L, "Name", "Right");
+
+        given(userService.updateLastName(1L, any())).willReturn(updatedMockUser);
+
+        mockMvc.perform(put("/user/updateFirstName/{id}", 3).contentType(MediaType.APPLICATION_JSON).content(asJsonString(mockUser)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+
+                .andExpect(jsonPath("$.user_Id", is(1)))
+                .andExpect(jsonPath("$.firstName", is("Name")))
+                .andExpect(jsonPath("$.lastName", is("Right")));
+    }
 
     // This method returns the JSON file in a string format.
     static String asJsonString(final Object obj){
