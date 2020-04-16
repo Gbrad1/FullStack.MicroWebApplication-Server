@@ -1,4 +1,4 @@
-package com.videolibrary.zipcode.fullstackapp.Controllers;
+package com.videolibrary.zipcode.fullstackapp.controllers;
 
 import com.videolibrary.zipcode.fullstackapp.models.User;
 import com.videolibrary.zipcode.fullstackapp.services.UserService;
