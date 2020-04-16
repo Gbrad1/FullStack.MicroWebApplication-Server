@@ -4,20 +4,31 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 
-
 @Entity
 public class Video {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Integer thumbsUp;
+    private Integer thumbsDown;
     private String videoTitle;
     private String videoPath;
 
     public Video() {}
 
-    public Video(String title, String videoPath) {
-        this.videoTitle = title;
+    public Video(String videoTitle, String videoPath) {
+        this.thumbsUp = 0;
+        this.thumbsDown = 0;
+        this.videoTitle = videoTitle;
+        this.videoPath = videoPath;
+    }
+
+    public Video(Long id, String videoTitle, String videoPath) {
+        this.id = id;
+        this.thumbsUp = 0;
+        this.thumbsDown = 0;
+        this.videoTitle = videoTitle;
         this.videoPath = videoPath;
     }
 
@@ -25,16 +36,16 @@ public class Video {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getTitle() {
+    public String getVideoTitle() {
         return videoTitle;
     }
 
-    public void setTitle(String title) {
-        this.videoTitle = title;
+    public void setVideoTitle(String videoTitle) {
+        this.videoTitle = videoTitle;
     }
 
     public String getVideoPath() {
@@ -43,5 +54,21 @@ public class Video {
 
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
+    }
+
+    public Integer getThumbsUp() {
+        return thumbsUp;
+    }
+
+    public void setThumbsUp(Integer thumbsUp) {
+        this.thumbsUp = thumbsUp;
+    }
+
+    public Integer getThumbsDown() {
+        return thumbsDown;
+    }
+
+    public void setThumbsDown(Integer thumbsDown) {
+        this.thumbsDown = thumbsDown;
     }
 }
