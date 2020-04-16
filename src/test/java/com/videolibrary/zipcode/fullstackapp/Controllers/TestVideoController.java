@@ -35,7 +35,7 @@ public class TestVideoController {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName ( "GET /Video/1 - Found" )
+    @DisplayName ( "GET /video/1 - Found" )
     public void testGetVideoById() throws Exception {
         //setup Mock Service
         Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath");
@@ -43,7 +43,7 @@ public class TestVideoController {
         doReturn(Optional.of(mockVideo)).when(mockVideoService).findVideo (1L);
 
         //execute GET request
-        mockMvc.perform ( get ( "/Video/{id}", 1 ) )
+        mockMvc.perform ( get ( "/video/{id}", 1 ) )
                 .andExpect ( status ().isOk () )
                 .andExpect ( content ().contentType ( MediaType.APPLICATION_JSON ) )
                 .andExpect ( jsonPath ( "$.id", is ( 1 ) ) )
@@ -54,27 +54,27 @@ public class TestVideoController {
     }
 
     @Test
-    @DisplayName ( "GET /Video/1 - Not Found" )
+    @DisplayName ( "GET /video/1 - Not Found" )
     public void testVideoFoundById() throws Exception {
         //Establish mocked service
         doReturn ( Optional.empty () ).when ( mockVideoService ).findVideo ( 1L );
 
         //Perform the GET request
-        mockMvc.perform ( get ("/Video/{id}",2) )
+        mockMvc.perform ( get ("/video/{id}",2) )
 
                 //Confirm the car is not there
                 .andExpect ( status ().isNotFound ());
     }
 
     @Test
-    @DisplayName ( "POST /Video - Success" )
+    @DisplayName ( "POST /video - Success" )
     public void testCreateVideo() throws Exception {
         //Set up mock video
         Video postVideo = new Video("testVideo", "urlPath");
         Video mockVideo = new Video ( 1L, "testVideo", "urlPath" );
         doReturn ( mockVideo ).when ( mockVideoService ).create ( any() );
         // given(mockVideoService.create ( postVideo )).willReturn(mockVideo);
-        mockMvc.perform ( post ( "/Video/create" )
+        mockMvc.perform ( post ( "/video/create" )
                 //.accept ( MediaType.APPLICATION_JSON )
                 .contentType( MediaType.APPLICATION_JSON)
                 .content(asJsonString( postVideo ) ))
@@ -92,7 +92,7 @@ public class TestVideoController {
     }
 
     @Test
-    @DisplayName ( "PUT /Video/1" )
+    @DisplayName ( "PUT /video/1" )
     public void testUpdateVideoPass() throws Exception {
         //Create mock video
         Video putVideo = new Video("TestVideo3", "urlPath3");
@@ -100,7 +100,7 @@ public class TestVideoController {
         doReturn ( Optional.of(mockVideo) ).when ( mockVideoService ).findVideo (3L);
         doReturn ( mockVideo ).when ( mockVideoService ).update ( 3L );
 
-        mockMvc.perform ( put("/Video/update/{id}", 3)
+        mockMvc.perform ( put("/video/update/{id}", 3)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header ( HttpHeaders.IF_MATCH, 3 )
                 .content(asJsonString (putVideo) ))
@@ -108,7 +108,7 @@ public class TestVideoController {
                 .andExpect(status ().isOk ())
                 .andExpect(content ().contentType ( MediaType.APPLICATION_JSON_VALUE ))
 
-                .andExpect(header ().string ( HttpHeaders.LOCATION, "/Video/3" ))
+                .andExpect(header ().string ( HttpHeaders.LOCATION, "/video/3" ))
 
                 .andExpect ( jsonPath ( "$.id", is ( 3 ) ) )
                 .andExpect ( jsonPath ( "$.thumbsUp", is ( 0 ) ) )
@@ -118,13 +118,13 @@ public class TestVideoController {
     }
 
     @Test
-    @DisplayName ( ("PUT /Video/1 - Not Found") )
+    @DisplayName ( ("PUT /video/1 - Not Found") )
     public void testUpdateVideoFail() throws Exception {
         //Create mock Video
         Video putVideo = new Video ("testFailVideo", "urlPath4");
         doReturn ( Optional.empty () ).when ( mockVideoService ).findVideo (3L);
 
-        mockMvc.perform ( put("/Video/update/{id}", 3)
+        mockMvc.perform ( put("/video/update/{id}", 3)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.IF_MATCH, 3)
                 .content(asJsonString ( putVideo )))

@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/Video/")
+@RequestMapping("/video/")
 public class VideoController {
 
     private VideoService service;
@@ -45,7 +45,7 @@ public class VideoController {
 
             try {
                 return ResponseEntity
-                        .created ( new URI ( "/Video/" + video.getId () ) )
+                        .created ( new URI ( "/video/" + video.getId () ) )
                         .body ( video );
             } catch (URISyntaxException e) {
                 return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR ).build();
@@ -66,7 +66,7 @@ public class VideoController {
             try {
                 return ResponseEntity
                         .ok ()
-                        .location ( new URI ("/Video/" + video.getId ()) )
+                        .location ( new URI ("/video/" + video.getId ()) )
                         .body (video);
             } catch (URISyntaxException e) {
                 return ResponseEntity.status ( HttpStatus.MULTI_STATUS.INTERNAL_SERVER_ERROR ).build ();
