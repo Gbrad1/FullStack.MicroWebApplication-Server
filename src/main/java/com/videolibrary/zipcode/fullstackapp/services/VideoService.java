@@ -2,6 +2,7 @@ package com.videolibrary.zipcode.fullstackapp.services;
 
 import com.videolibrary.zipcode.fullstackapp.aws.AmazonClient;
 import com.videolibrary.zipcode.fullstackapp.models.Video;
+
 import com.videolibrary.zipcode.fullstackapp.repositories.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ public class VideoService {
 
     private VideoRepository videoRepository;
 
-    @Autowired
     private AmazonClient s3client;
 
     @Autowired
-    public VideoService(VideoRepository videoRepository) {
+    public VideoService(VideoRepository videoRepository, AmazonClient s3client) {
         this.videoRepository = videoRepository;
+        this.s3client = s3client;
     }
 
     public Video create(Video v) {
@@ -46,9 +47,9 @@ public class VideoService {
         return videoRepository.findAll();
     }
 
-    public Video update(Long id, Video v) {
+    public Video update(Long id) {
         Video video = videoRepository.getVideoById(id);
-        video.setTitle(v.getTitle());
+        video.setVideoTitle (video.getVideoTitle());
         videoRepository.save(video);
         return video;
     }

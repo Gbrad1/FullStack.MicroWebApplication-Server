@@ -8,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/Video/")
 public class VideoController {
@@ -37,17 +41,52 @@ public class VideoController {
 
     @PostMapping("create")
     public ResponseEntity<Video> create(@RequestBody Video v) {
-        return new ResponseEntity<>(service.create(v), HttpStatus.CREATED);
+        Video video = service.create(v);
+
+            try {
+                return ResponseEntity
+                        .created ( new URI ( "/Video/" + video.getId () ) )
+                        .body ( video );
+            } catch (URISyntaxException e) {
+                return ResponseEntity.status ( HttpStatus.INTERNAL_SERVER_ERROR ).build();
+            }
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Video> update(@PathVariable Long id, @RequestBody Video v) {
-        return new ResponseEntity<>(service.update(id, v), HttpStatus.OK);
+    @PutMapping(value = "update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Video v) {
+        Optional<Video> currentVideo = service.findVideo(id);
+
+        return currentVideo
+                .map(video -> {
+                    video.setThumbsUp (v.getThumbsUp ());
+                    video.setThumbsDown (v.getThumbsDown ());
+                    video.setVideoTitle (v.getVideoTitle ());
+                    video.setVideoPath (v.getVideoPath ());
+
+            try {
+                return ResponseEntity
+                        .ok ()
+                        .location ( new URI ("/Video/" + video.getId ()) )
+                        .body (video);
+            } catch (URISyntaxException e) {
+                return ResponseEntity.status ( HttpStatus.MULTI_STATUS.INTERNAL_SERVER_ERROR ).build ();
+            }
+        }) .orElse ( ResponseEntity.notFound ().build ());
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable long id) throws Exception {
-        return new ResponseEntity<>(service.delete(id), HttpStatus.GONE);
+    public ResponseEntity<?> delete(@PathVariable long id) {
+        Optional<Video> currentVideo = service.findVideo (id);
+        return  currentVideo
+        .map(video -> {
+            try {
+                service.delete ( video.getId () );
+            } catch (Exception e) {
+                e.printStackTrace ();
+            }
+            return ResponseEntity.ok ().build ();
+        })
+          .orElse ( (ResponseEntity.notFound ().build ()) );
     }
 
     @PostMapping("upload")
