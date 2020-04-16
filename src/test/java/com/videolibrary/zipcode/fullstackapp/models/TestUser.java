@@ -1,6 +1,5 @@
-package com.videolibrary.zipcode.fullstackapp.Models;
+package com.videolibrary.zipcode.fullstackapp.models;
 
-import com.videolibrary.zipcode.fullstackapp.models.User;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 

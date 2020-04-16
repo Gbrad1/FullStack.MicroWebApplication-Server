@@ -1,8 +1,10 @@
 package com.videolibrary.zipcode.fullstackapp.services;
 
 import com.videolibrary.zipcode.fullstackapp.models.Comment;
+import com.videolibrary.zipcode.fullstackapp.models.Video;
 import com.videolibrary.zipcode.fullstackapp.repositories.CommentRepository;
-import org.junit.Test;
+import com.videolibrary.zipcode.fullstackapp.repositories.VideoRepository;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -29,56 +31,64 @@ public class CommentServiceTest {
     @MockBean
     private CommentRepository commentRepository;
 
+    @MockBean
+    private VideoService videoService;
+
+    @MockBean
+    private VideoRepository videoRepository;
+
+
     @Test
-    @DisplayName("Test findByIdSuccess")
-    public void findByIdSuccessTest() {
-
-        Comment mockComment = new Comment("This video is amazing!!");
-        doReturn (Optional.of( mockComment )).when ( commentRepository ).findById(1L);
-
-        Optional<Comment> testComment = commentRepository.findById( 1L );
-
-        Assertions.assertTrue(testComment.isPresent(), "No Comment was found");
-        Assertions.assertSame(testComment.get(), mockComment, "Comments don't match up");
+    @DisplayName("Test showComment Success")
+    public void testFindByIdFound(){
+        Comment mockComment = new Comment(1L , "Test Comment");
+        doReturn(Optional.of(mockComment)).when(commentRepository).findById(1L);
+        Optional<Comment> resultComment = commentService.showComment(1L);
+        Assertions.assertTrue(resultComment.isPresent());
+        Assertions.assertSame(resultComment.get(),mockComment);
     }
 
+
     @Test
-    @DisplayName("Test findByIdFail")
-    public void findByIdFailTest() {
-        //Sets up mock repository
-        doReturn ( Optional.empty () ).when ( commentRepository ).findById ( 1L );
-        //Makes the service call
-        Optional<Comment> testComment = commentRepository.findById ( 1L );
-        //Checks to see if car is not found
-        Assertions.assertFalse ( testComment.isPresent (), "Comment was found when it shouldn't have been" );
+    @DisplayName("Test showComment Failure")
+    public void testFindByIdNotFound(){
+        doReturn(Optional.empty()).when(commentRepository).findById(1L);
+        Optional<Comment> resultComment = commentService.showComment(1L);
+        Assertions.assertFalse(resultComment.isPresent());
     }
 
+
     @Test
-    @DisplayName ( "Test findAll" )
-    public void testIndex() {
-        //set up mock car list and repo
-        Comment mockComment1 = new Comment("First");
-        Comment mockComment2 = new Comment("No I'm first");
-        Comment mockComment3 = new Comment("Oppa <3");
-        Comment mockComment4 = new Comment("HAVE MY BABIES");
-
-        doReturn ( Arrays.asList (mockComment1, mockComment2, mockComment3, mockComment4)).when(commentRepository).findAll();
-
-        //Make the call to videoService
-        List<Comment> mockCommentList = commentService.index();
-
-        //Check assertions
-        Assertions.assertEquals ( 4, mockCommentList.size (), "method should return 4 videos" );
+    @DisplayName("Test showAll")
+    public void testShowAll(){// Set up mock object and repository
+        Comment mockComment1 = new Comment(1L , "Test Comment 1");
+        Comment mockComment2 = new Comment(2L , "Test Comment 2");
+        doReturn(Arrays.asList(mockComment1,mockComment2)).when(commentRepository).findAll();
+        List<Comment> commentsList = (List<Comment>) commentService.showAll();
+        Assertions.assertEquals(2,commentsList.size());
     }
 
+
     @Test
-    @DisplayName ( "Test saveVideo" )
-    public void testCreateVideo() {
-        Comment mockComment = new Comment ("If you click dislike you must be blind");
-        doReturn ( mockComment ).when ( commentRepository ).save ( mockComment );
+    @DisplayName("Test create")
+    public void testCreate() throws Exception {
+        Comment mockComment = new Comment(1L , "Test Comment 1");
+        Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath");
+        doReturn(mockVideo).when(videoRepository).save(mockVideo);
+        doReturn(Optional.of(mockVideo)).when(videoService).findById(1L);
+        doReturn(mockComment).when(commentRepository).save(mockComment);
+        Comment resultComment = commentService.create(mockComment);
+        Assertions.assertNotNull(resultComment);
+    }
 
-        Comment testComment = commentService.create ( mockComment );
 
-        Assertions.assertNotNull ( testComment, "The comment we saved should not return Null" );
+    @Test
+    @DisplayName("Test deleteComment Success")
+    public void testDeleteComment(){
+        Comment mockComment = new Comment(1L, 1L,"Test Comment 1");
+        doReturn(mockComment).when(commentRepository).save(mockComment);
+        doReturn(mockComment).when(commentRepository).getOne(1L);
+        Boolean deleted = commentService.deleteComment(1L);
+        Assertions.assertTrue(deleted);
     }
 }

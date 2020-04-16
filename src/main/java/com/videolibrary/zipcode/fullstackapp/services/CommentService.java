@@ -5,33 +5,50 @@ import com.videolibrary.zipcode.fullstackapp.repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class CommentService {
 
+    private CommentRepository commentRepo;
+
     @Autowired
-    private CommentRepository repository;
-
-    public CommentService(CommentRepository userRepository) {
-        this.repository = userRepository;
+    public CommentService(CommentRepository commentRepo){
+        this.commentRepo = commentRepo;
+    }
+    public Optional<Comment> showComment(Long id){
+        return commentRepo.findById(id);
     }
 
-    public Comment create(Comment comment) {
-        return repository.save(comment);
+    public Iterable<Comment> showAll(){
+        return commentRepo.findAll();
     }
 
-    public Comment show(Long id) {
-        return repository.getCommentById(id);
+    public Comment create(Comment comment){
+        return commentRepo.save(comment);
     }
 
-    public List<Comment> index() {
-        return repository.findAll();
+    public Boolean deleteComment(Long commentId){
+        Comment comment = commentRepo.getOne(commentId);
+        if(commentId.equals(comment.getCommentId())){
+            commentRepo.deleteById(commentId);
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public boolean delete(Long id) {
-        repository.deleteById(id);
-        return true;
+    public List<String> findByVideoId(Long videoId){
+        List<String> comments = new ArrayList();
+        //comentRopo.findCommentsByVideoId(videoId)
+        for(Comment comment : commentRepo.findAll()){
+            if(comment.getVideoId().equals(videoId)){
+                comments.add(comment.getComment());
+            }
+        }
+        return comments;
     }
 }
