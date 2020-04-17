@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/video/")
 public class VideoController {
 
@@ -89,13 +90,13 @@ public class VideoController {
           .orElse ( (ResponseEntity.notFound ().build ()) );
     }
 
+    // Uploads the video to the aws bucket.
     @PostMapping("upload")
-    public ResponseEntity<Video> uploadVideo(@RequestParam String videoName, @RequestPart(value = "file") MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<Video> uploadVideo(@RequestParam String videoName, @RequestParam("file") MultipartFile multipartFile) throws Exception {
         Video tempVideo = service.saveVideo(videoName, multipartFile);
         if(tempVideo != null){
             return new ResponseEntity<>(tempVideo, HttpStatus.OK);
         } else
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
     }
-
 }

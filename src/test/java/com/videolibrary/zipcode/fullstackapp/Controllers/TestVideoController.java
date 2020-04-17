@@ -38,7 +38,7 @@ public class TestVideoController {
     @DisplayName ( "GET /video/1 - Found" )
     public void testGetVideoById() throws Exception {
         //setup Mock Service
-        Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath");
+        Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath", 0, 0);
         doReturn(mockVideo).when(mockVideoService).create(mockVideo);
         doReturn(Optional.of(mockVideo)).when(mockVideoService).findVideo (1L);
 
@@ -70,8 +70,8 @@ public class TestVideoController {
     @DisplayName ( "POST /video - Success" )
     public void testCreateVideo() throws Exception {
         //Set up mock video
-        Video postVideo = new Video("testVideo", "urlPath");
-        Video mockVideo = new Video ( 1L, "testVideo", "urlPath" );
+        Video postVideo = new Video("testVideo", "urlPath", 0, 0);
+        Video mockVideo = new Video ( 1L, "testVideo", "urlPath", 0, 0 );
         doReturn ( mockVideo ).when ( mockVideoService ).create ( any() );
         // given(mockVideoService.create ( postVideo )).willReturn(mockVideo);
         mockMvc.perform ( post ( "/video/create" )
@@ -95,8 +95,8 @@ public class TestVideoController {
     @DisplayName ( "PUT /video/1" )
     public void testUpdateVideoPass() throws Exception {
         //Create mock video
-        Video putVideo = new Video("TestVideo3", "urlPath3");
-        Video mockVideo = new Video( 3L, "TestVideo3", "urlPath3");
+        Video putVideo = new Video("TestVideo3", "urlPath3", 0, 0);
+        Video mockVideo = new Video( 3L, "TestVideo3", "urlPath3", 0, 0);
         doReturn ( Optional.of(mockVideo) ).when ( mockVideoService ).findVideo (3L);
         doReturn ( mockVideo ).when ( mockVideoService ).update ( 3L );
 
@@ -121,7 +121,7 @@ public class TestVideoController {
     @DisplayName ( ("PUT /video/1 - Not Found") )
     public void testUpdateVideoFail() throws Exception {
         //Create mock Video
-        Video putVideo = new Video ("testFailVideo", "urlPath4");
+        Video putVideo = new Video ("testFailVideo", "urlPath4", 0, 0);
         doReturn ( Optional.empty () ).when ( mockVideoService ).findVideo (3L);
 
         mockMvc.perform ( put("/video/update/{id}", 3)
@@ -138,7 +138,7 @@ public class TestVideoController {
     @DisplayName ( ("DELETE /Video/1 - Success") )
     public void deleteVideo() throws Exception {
         //Create mock video
-        Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath");
+        Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath", 0, 0);
 
         //Establish mocked Service
         doReturn ( Optional.of ( mockVideo ) ).when ( mockVideoService ).findVideo ( 1L );
