@@ -32,13 +32,10 @@ public class TestVideoServices {
     @Test
     @DisplayName("Test findByIdSuccess")
     public void testGetVideoByIdSuccess() {
-        Video mockVideo = new Video ( 1L, "testVideo", "urlPath" );
+        Video mockVideo = new Video ( 1L, 4, 1,"testVideo", "urlPath" );
         doReturn ( Optional.of (mockVideo )).when ( videoRepository ).findById ( 1L ) ;
 
         Optional<Video> testVideo = videoService.findById ( 1L );
-       // String expected = testVideo.get ().getVideoTitle ();
-
-      //  Assertions.assertEquals ( expected, "testVideo" );
 
         Assertions.assertTrue(testVideo.isPresent(), "No Video was found when there should be one");
         Assertions.assertSame(testVideo.get(),mockVideo, "Models don't match up");
@@ -59,10 +56,10 @@ public class TestVideoServices {
         @DisplayName ( "Test findAll" )
         public void testIndex() {
             //set up mock car list and repo
-            Video mockVideo1 = new Video ( 1L, "testVideo1", "urlPath1" );
-            Video mockVideo2 = new Video ( 2L, "testVideo2", "urlPath2" );
-            Video mockVideo3 = new Video ( 3L, "testVideo3", "urlPath3" );
-            Video mockVideo4 = new Video ( 4L, "testVideo4", "urlPath4" );
+            Video mockVideo1 = new Video ( 1L, 3,1,"testVideo1", "urlPath1" );
+            Video mockVideo2 = new Video ( 2L, 4, 1, "testVideo2", "urlPath2" );
+            Video mockVideo3 = new Video ( 3L, 1, 3,"testVideo3", "urlPath3" );
+            Video mockVideo4 = new Video ( 4L, 2, 2, "testVideo4", "urlPath4" );
             doReturn ( Arrays.asList (mockVideo1, mockVideo2, mockVideo3, mockVideo4)).when(videoRepository).findAll ();
 
             //Make the call to videoService
@@ -76,7 +73,7 @@ public class TestVideoServices {
         @DisplayName ( "Test saveVideo" )
         public void testCreateVideo() {
         // Set up mock video
-        Video mockVideo = new Video (1L, "testVideo1", "urlPath");
+        Video mockVideo = new Video (1L, 4, 4, "testVideo1", "urlPath");
         doReturn ( mockVideo ).when ( videoRepository ).save ( mockVideo );
 
         // Make call to videoService

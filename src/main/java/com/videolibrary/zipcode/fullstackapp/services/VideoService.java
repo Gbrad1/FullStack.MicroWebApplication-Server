@@ -54,6 +54,10 @@ public class VideoService {
         return video;
     }
 
+    public boolean delete(Long videoId) throws Exception {
+        return videoRepository.deleteVideoById(videoId);
+    }
+
     public File convertMultiPartFile(MultipartFile file) throws IOException {
         File convertedFile = new File(file.getOriginalFilename());
         FileOutputStream fileOutputStream = new FileOutputStream(convertedFile);
@@ -86,9 +90,7 @@ public class VideoService {
         return s3client.generateAwsS3Client().putObject(putObjectRequest, RequestBody.fromFile(file)).sdkHttpResponse();
     }
 
-    public boolean delete(Long videoId) throws Exception {
-        return videoRepository.deleteVideoById(videoId);
-    }
+
 
     //stays the same
     public DeleteObjectResponse deleteFile(String fileName, String videoPath) {

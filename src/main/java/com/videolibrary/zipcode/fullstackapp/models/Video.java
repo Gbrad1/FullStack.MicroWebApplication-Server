@@ -24,10 +24,10 @@ public class Video {
         this.videoPath = videoPath;
     }
 
-    public Video(Long id, String videoTitle, String videoPath) {
+    public Video(Long id, Integer thumbsUp, Integer thumbsDown, String videoTitle, String videoPath) {
         this.id = id;
-        this.thumbsUp = 0;
-        this.thumbsDown = 0;
+        this.thumbsUp = thumbsUp;
+        this.thumbsDown = thumbsDown;
         this.videoTitle = videoTitle;
         this.videoPath = videoPath;
     }

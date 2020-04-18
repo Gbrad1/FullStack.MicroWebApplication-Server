@@ -39,7 +39,7 @@ public class TestVideoController {
     @DisplayName ( "GET /video/1 - Found" )
     public void testGetVideoById() throws Exception {
         //setup Mock Service
-        Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath");
+        Video mockVideo = new Video ( 1L, 5, 3,"TestVideo1", "urlPath");
         doReturn(mockVideo).when(mockVideoService).create(mockVideo);
         doReturn(Optional.of(mockVideo)).when(mockVideoService).findById (1L);
 
@@ -48,8 +48,8 @@ public class TestVideoController {
                 .andExpect ( status ().isOk () )
                 .andExpect ( content ().contentType ( MediaType.APPLICATION_JSON ) )
                 .andExpect ( jsonPath ( "$.id", is ( 1 ) ) )
-                .andExpect ( jsonPath ( "$.thumbsUp", is ( 0 ) ) )
-                .andExpect ( jsonPath ( "$.thumbsDown", is(0 ) ))
+                .andExpect ( jsonPath ( "$.thumbsUp", is ( 5 ) ) )
+                .andExpect ( jsonPath ( "$.thumbsDown", is(3 ) ))
                 .andExpect ( jsonPath ( "$.videoTitle", is ( "TestVideo1" ) ) )
                 .andExpect ( jsonPath ( "$.videoPath", is("urlPath")  ));
         }
@@ -72,7 +72,7 @@ public class TestVideoController {
     public void testCreateVideo() throws Exception {
             //Set up mock video
         Video postVideo = new Video("testVideo", "urlPath");
-        Video mockVideo = new Video ( 1L, "testVideo", "urlPath" );
+        Video mockVideo = new Video ( 1L, 4, 1,"testVideo", "urlPath" );
         doReturn ( mockVideo ).when ( mockVideoService ).create ( any() );
             // given(mockVideoService.create ( postVideo )).willReturn(mockVideo);
         mockMvc.perform ( post ( "/video/create" )
@@ -86,8 +86,8 @@ public class TestVideoController {
                 .andExpect(header ().string( HttpHeaders.LOCATION, "/video/1" ))
 
                 .andExpect ( jsonPath ( "$.id", is ( 1 ) ) )
-                .andExpect ( jsonPath ( "$.thumbsUp", is ( 0 ) ) )
-                .andExpect ( jsonPath ( "$.thumbsDown", is(0 ) ))
+                .andExpect ( jsonPath ( "$.thumbsUp", is ( 4 ) ) )
+                .andExpect ( jsonPath ( "$.thumbsDown", is(1 ) ))
                 .andExpect ( jsonPath ( "$.videoTitle", is ( "testVideo" ) ) )
                 .andExpect ( jsonPath ( "$.videoPath", is("urlPath")  ));
     }
@@ -97,7 +97,7 @@ public class TestVideoController {
     public void testUpdateVideoPass() throws Exception {
         //Create mock video
         Video putVideo = new Video("TestVideo3", "urlPath3");
-        Video mockVideo = new Video( 3L, "TestVideo3", "urlPath3");
+        Video mockVideo = new Video( 3L, 3, 2,"TestVideo3", "urlPath3");
         doReturn ( Optional.of(mockVideo) ).when ( mockVideoService ).findById (3L);
         doReturn ( mockVideo ).when ( mockVideoService ).update ( 3L );
 
@@ -112,8 +112,8 @@ public class TestVideoController {
                 .andExpect(header ().string ( HttpHeaders.LOCATION, "/video/3" ))
 
                 .andExpect ( jsonPath ( "$.id", is ( 3 ) ) )
-                .andExpect ( jsonPath ( "$.thumbsUp", is ( 0 ) ) )
-                .andExpect ( jsonPath ( "$.thumbsDown", is(0 ) ))
+                .andExpect ( jsonPath ( "$.thumbsUp", is ( 3 ) ) )
+                .andExpect ( jsonPath ( "$.thumbsDown", is(2 ) ))
                 .andExpect ( jsonPath ( "$.videoTitle", is ( "TestVideo3" ) ) )
                 .andExpect ( jsonPath ( "$.videoPath", is("urlPath3")  ));
     }
@@ -139,7 +139,7 @@ public class TestVideoController {
     @DisplayName ( ("DELETE /video/1 - Success") )
     public void deleteVideo() throws Exception {
         //Create mock video
-        Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath");
+        Video mockVideo = new Video ( 1L, 1, 1, "TestVideo1", "urlPath");
 
         //Establish mocked Service
         doReturn ( Optional.of ( mockVideo ) ).when ( mockVideoService ).findById ( 1L );
@@ -149,6 +149,7 @@ public class TestVideoController {
         mockMvc.perform ( delete ( "/video/{id}", 1 ) )
                 .andExpect ( status ().isOk () );
     }
+
 
 
     public static String asJsonString(final Object obj) {
