@@ -43,7 +43,7 @@ public class CommentService {
 
     public List<String> findByVideoId(Long videoId){
         List<String> comments = new ArrayList();
-        //comentRopo.findCommentsByVideoId(videoId)
+        commentRepo.findByVideoId(videoId);
         for(Comment comment : commentRepo.findAll()){
             if(comment.getVideoId().equals(videoId)){
                 comments.add(comment.getComment());

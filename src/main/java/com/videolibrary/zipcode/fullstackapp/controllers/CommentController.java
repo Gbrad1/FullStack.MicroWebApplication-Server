@@ -22,21 +22,19 @@ public class CommentController {
         this.service = service;
     }
 
-    //************************************************** ******************  Show Comment   ******************
-    @GetMapping("/showComment/{id}")
+    @GetMapping("/comments/{id}")
     public ResponseEntity<?> showComment(@PathVariable Long id){
         return this.service.showComment(id)
                 .map(comment -> ResponseEntity.ok().body(comment))
                 .orElse(ResponseEntity.notFound().build());
     }
-    //************************************************** ******************  Show All   ******************
-    @GetMapping("/show")
+
+    @GetMapping("/comments")
     public ResponseEntity<Iterable<Comment>> showAll(){
         return new ResponseEntity<>(service.showAll() , HttpStatus.OK);
     }
 
-    //********************************************************************  Create   ********************
-    @PostMapping("/create")
+    @PostMapping("/comments")
     public ResponseEntity<Comment> create(@RequestBody Comment comment){
 
         Comment newComment = this.service.create(comment);
@@ -49,14 +47,13 @@ public class CommentController {
         }
 
     }
-    //********************************************************************  Remove   ******************
-    @DeleteMapping(value ="/delete/{commentId}")
+
+    @DeleteMapping(value ="/comments/{commentId}")
     public ResponseEntity<Boolean> deleteComment(@PathVariable Long commentId) {
         return new ResponseEntity<>(service.deleteComment(commentId) , HttpStatus.OK);
     }
 
-    //********************************************************************  Find By Video ID   ***********
-    @GetMapping("/findByVideoId/{videoId}")
+    @GetMapping("/comments/{videoId}")
     public ResponseEntity<List<String>> findCommentsByVideoId(@PathVariable Long videoId){
         return new ResponseEntity<>(service.findByVideoId(videoId) , HttpStatus.OK);
     }

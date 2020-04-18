@@ -4,6 +4,7 @@ import com.videolibrary.zipcode.fullstackapp.models.Comment;
 import com.videolibrary.zipcode.fullstackapp.models.Video;
 import com.videolibrary.zipcode.fullstackapp.services.CommentService;
 import com.videolibrary.zipcode.fullstackapp.services.VideoService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,62 +42,64 @@ public class CommentControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Get /comments/showComment/1 - Found")
+    @DisplayName("Test showById Success")
     public void testShowCommentFound() throws Exception{
-        Comment mockComment = new Comment(1L, 1L,"Test Comment");
+        Comment mockComment = new Comment(1L, 1L,"Test comment");
         Video mockVideo = new Video ( 1L, "TestVideo1", "urlPath");
         doReturn(Optional.of(mockVideo)).when(videoService).findById(1L);
         doReturn(mockComment).when(commentService).create(mockComment);
         doReturn(Optional.of(mockComment)).when(commentService).showComment(1L);
 
-        mockMvc.perform(get("/zc-video-app/comments/show/{id}",1))
+        mockMvc.perform(get("/comments/{id}",1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.commentId",is(1)))
                 .andExpect(jsonPath("$.userId",is(1)))
-                .andExpect(jsonPath("$.message",is("Test Comment")));
+                .andExpect(jsonPath("$.message",is("Test comment")));
     }
 
     @Test
-    @DisplayName("Get /comments/showComment/1 - Not Found")
-    public void testShowCommentNotFound() throws Exception{
+    @DisplayName("Test showById Fail")
+    public void testShowCommentNotFound() throws Exception {
 
         doReturn(Optional.empty()).when(commentService).showComment(1L);
 
-        mockMvc.perform(get("/zc-video-app/comments/showComment/{id}",1))
+        Optional<Comment> testComment = commentService.showComment(1L);
+
+        mockMvc.perform(get("/comments/{id}", 2))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    @DisplayName("Get /comments/show - Found")
+    @DisplayName("Test findAll")
     public void testShowAllComments() throws Exception{
-        Comment mockComment1 = new Comment(1L, 1L,"Test Comment 1");
-        Comment mockComment2 = new Comment(2L, 2L,"Test Comment 2");
+        Comment mockComment1 = new Comment(1L, 1L,"Test comment 1");
+        Comment mockComment2 = new Comment(2L, 2L,"Test comment 2");
 
         Iterable<Comment> comments = new ArrayList<>(Arrays.asList(mockComment1,mockComment2));
         doReturn(comments).when(commentService).showAll();
 
-        mockMvc.perform(get("/zc-video-app/comments/show",1))
+        mockMvc.perform(get("/comments/",1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(jsonPath("$[0].commentId",is(1)))
                 .andExpect(jsonPath("$[0].userId",is(1)))
-                .andExpect(jsonPath("$[0].message",is("Test Comment 1")))
+                .andExpect(jsonPath("$[0].message",is("Test comment 1")))
 
                 .andExpect(jsonPath("$[1].commentId",is(2)))
                 .andExpect(jsonPath("$[1].userId",is(2)))
-                .andExpect(jsonPath("$[1].message",is("Test Comment 2")));
+                .andExpect(jsonPath("$[1].message",is("Test comment 2")));
     }
 
     @Test
-    @DisplayName("Get /comments/create - Successful")
+    @DisplayName("Test create")
     public void testCreateComment() throws Exception{
 
-        Comment mockComment = new Comment(1L , 1L,"Test Comment 1");
+        Comment mockComment = new Comment(1L , 1L,"Test comment 1");
 
         given(commentService.create(mockComment)).willReturn(mockComment);
-        mockMvc.perform(post("/zc-video-app/comments/create")
+        mockMvc.perform(post("/comments/create")
                 .contentType(MediaType.APPLICATION_JSON));
     }
 
