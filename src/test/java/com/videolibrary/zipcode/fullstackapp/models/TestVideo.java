@@ -19,7 +19,7 @@ public class TestVideo {
 
     @Test
     public void testConstructor1() {
-        testVideo = new Video ( "Path to Fame", "urlPathToFame" );
+        testVideo = new Video ( 5,1,"Path to Fame", "urlPathToFame" );
         String actualVideoTitle = testVideo.getVideoTitle ();
         String actualVideoPath = testVideo.getVideoPath ();
         Assert.assertNull ( testVideo.getId () );

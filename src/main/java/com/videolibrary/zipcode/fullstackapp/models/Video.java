@@ -8,18 +8,19 @@ import javax.persistence.*;
 public class Video {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer thumbsUp;
     private Integer thumbsDown;
     private String videoTitle;
     private String videoPath;
+    private String initialTitle;
 
     public Video() {}
 
-    public Video(String videoTitle, String videoPath) {
-        this.thumbsUp = 0;
-        this.thumbsDown = 0;
+    public Video(Integer thumbsUp, Integer thumbsDown, String videoTitle, String videoPath) {
+        this.thumbsUp = thumbsUp;
+        this.thumbsDown = thumbsDown;
         this.videoTitle = videoTitle;
         this.videoPath = videoPath;
     }
@@ -70,5 +71,13 @@ public class Video {
 
     public void setThumbsDown(Integer thumbsDown) {
         this.thumbsDown = thumbsDown;
+    }
+
+    public String getInitialTitle() {
+        return initialTitle;
+    }
+
+    public void setInitialTitle(String initialTitle) {
+        this.initialTitle = initialTitle;
     }
 }

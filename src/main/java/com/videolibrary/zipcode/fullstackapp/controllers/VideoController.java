@@ -13,6 +13,8 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
+
 @RequestMapping("/video/")
 public class VideoController {
 
@@ -25,23 +27,23 @@ public class VideoController {
 
     @GetMapping()
     public ResponseEntity<?> index() {
-        return new ResponseEntity<>(service.index(), HttpStatus.OK);
+        return new ResponseEntity<>(service.findAllVideos(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
-        return this.service.findById ( id )
-                .map ( video -> ResponseEntity
-                .ok ()
-                .body ( video ))
-                .orElse ( ResponseEntity
-                .notFound ()
-                .build ());
+        return this.service.findVideo(id)
+                .map(video -> ResponseEntity
+                        .ok()
+                        .body (video))
+                .orElse(ResponseEntity
+                        .notFound()
+                        .build());
     }
 
     @PostMapping("create")
     public ResponseEntity<Video> create(@RequestBody Video v) {
-        Video video = service.create ( v );
+        Video video = service.create(v);
 
             try {
                 return ResponseEntity
@@ -54,7 +56,7 @@ public class VideoController {
 
     @PutMapping(value = "update/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Video v) {
-        Optional<Video> currentVideo = service.findById (id);
+        Optional<Video> currentVideo = service.findVideo(id);
 
         return currentVideo
                 .map(video -> {
@@ -74,28 +76,27 @@ public class VideoController {
         }) .orElse ( ResponseEntity.notFound ().build ());
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable long id) {
-        Optional<Video> currentVideo = service.findById (id);
-        return  currentVideo
-        .map(video -> {
-            try {
-                service.delete ( video.getId () );
-            } catch (Exception e) {
-                e.printStackTrace ();
+    @DeleteMapping("delete/{id}")
+    public boolean delete(@PathVariable long id) throws Exception {
+        Optional<Video> currentVideo = service.findVideo(id);
+        if (currentVideo.isPresent()) {
+            if (
+            service.deleteFile(currentVideo.get().getInitialTitle())
+                    .sdkHttpResponse().isSuccessful()) {
+                service.delete(id);
             }
-            return ResponseEntity.ok ().build ();
-        })
-          .orElse ( (ResponseEntity.notFound ().build ()) );
+        }
+        return true;
     }
 
+    // Uploads the video to the aws bucket.
     @PostMapping("upload")
-    public ResponseEntity<Video> uploadVideo(@RequestParam String videoName, @RequestPart(value = "file") MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<Video> uploadVideo(@RequestParam String videoName, @RequestParam("file") MultipartFile multipartFile) throws Exception {
+        System.out.println(videoName);
         Video tempVideo = service.saveVideo(videoName, multipartFile);
         if(tempVideo != null){
             return new ResponseEntity<>(tempVideo, HttpStatus.OK);
         } else
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
     }
-
 }

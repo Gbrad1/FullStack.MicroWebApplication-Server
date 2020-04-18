@@ -36,14 +36,16 @@ public class VideoService {
     }
 
     public Video create(Video v) {
+        v.setThumbsDown(0);
+        v.setThumbsUp(0);
         return videoRepository.save(v);
     }
 
-    public Optional<Video> findById(Long id) {
+    public Optional<Video> findVideo(Long id) {
         return videoRepository.findById(id);
     }
 
-    public List<Video> index() {
+    public List<Video> findAllVideos() {
         return videoRepository.findAll();
     }
 
@@ -52,10 +54,6 @@ public class VideoService {
         video.setVideoTitle (video.getVideoTitle());
         videoRepository.save(video);
         return video;
-    }
-
-    public boolean delete(Long videoId) throws Exception {
-        return videoRepository.deleteVideoById(videoId);
     }
 
     public File convertMultiPartFile(MultipartFile file) throws IOException {
@@ -70,8 +68,9 @@ public class VideoService {
     public Video saveVideo(String videoName, MultipartFile multipartFile) throws Exception{
         String endPointUrl = "https:/videolibrary-video-bucket.s3.amazonaws.com";
         File file = convertMultiPartFile(multipartFile);
-        Video video = new Video(videoName, multipartFile.getContentType());
+        Video video = new Video(0,0,videoName, multipartFile.getContentType());
         String fileName = generateFileName(file.getName());
+        video.setInitialTitle(fileName);
         String fileUrl = endPointUrl + "/" + fileName;
         video.setVideoPath(fileUrl);
         if(uploadFile(file, fileName).isSuccessful()){
@@ -90,10 +89,13 @@ public class VideoService {
         return s3client.generateAwsS3Client().putObject(putObjectRequest, RequestBody.fromFile(file)).sdkHttpResponse();
     }
 
-
+    public boolean delete(Long videoId) throws Exception {
+        videoRepository.deleteById(videoId);
+        return true;
+    }
 
     //stays the same
-    public DeleteObjectResponse deleteFile(String fileName, String videoPath) {
+    public DeleteObjectResponse deleteFile(String fileName) {
         DeleteObjectRequest deleteObjectResponse = DeleteObjectRequest.builder()
                 .bucket(s3client.getBucket()).key(fileName).build();
         return s3client.generateAwsS3Client().deleteObject(deleteObjectResponse);

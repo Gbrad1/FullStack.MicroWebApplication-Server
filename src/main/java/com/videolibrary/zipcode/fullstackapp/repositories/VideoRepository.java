@@ -9,10 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Long> {
-
     Video getVideoById(Long id);
-
-    boolean deleteVideoById(Long id);
-
     List<Video> findAll();
 }
