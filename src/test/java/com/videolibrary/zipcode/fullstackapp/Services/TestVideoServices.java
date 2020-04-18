@@ -33,13 +33,10 @@ public class TestVideoServices {
     @Test
     @DisplayName("Test findByIdSuccess")
     public void testGetVideoByIdSuccess() {
-        Video mockVideo = new Video ( 1L, "testVideo", "urlPath" );
+        Video mockVideo = new Video ( 1L, "testVideo", "urlPath", 0, 0);
         doReturn ( Optional.of (mockVideo )).when ( videoRepository ).findById ( 1L ) ;
 
-        Optional<Video> testVideo = videoService.findById ( 1L );
-       // String expected = testVideo.get ().getVideoTitle ();
-
-      //  Assertions.assertEquals ( expected, "testVideo" );
+        Optional<Video> testVideo = videoService.findVideo ( 1L );
 
         Assertions.assertTrue(testVideo.isPresent(), "No Video was found when there should be one");
         Assertions.assertSame(testVideo.get(),mockVideo, "Models don't match up");
@@ -51,7 +48,7 @@ public class TestVideoServices {
         //Sets up mock repository
         doReturn ( Optional.empty () ).when ( videoRepository ).findById ( 1L );
         //Makes the service call
-        Optional<Video> testVideo = videoService.findById ( 1L );
+        Optional<Video> testVideo = videoService.findVideo ( 1L );
         //Checks to see if car is not found
         Assertions.assertFalse ( testVideo.isPresent (), "Video was found when it shouldn't have been" );
         }
@@ -60,14 +57,14 @@ public class TestVideoServices {
         @DisplayName ( "Test findAll" )
         public void testIndex() {
             //set up mock car list and repo
-            Video mockVideo1 = new Video ( 1L, "testVideo1", "urlPath1" );
-            Video mockVideo2 = new Video ( 2L, "testVideo2", "urlPath2" );
-            Video mockVideo3 = new Video ( 3L, "testVideo3", "urlPath3" );
-            Video mockVideo4 = new Video ( 4L, "testVideo4", "urlPath4" );
+            Video mockVideo1 = new Video ( 1L, "testVideo1", "urlPath1", 0, 0 );
+            Video mockVideo2 = new Video ( 2L, "testVideo2", "urlPath2", 0, 0 );
+            Video mockVideo3 = new Video ( 3L, "testVideo3", "urlPath3", 0, 0 );
+            Video mockVideo4 = new Video ( 4L, "testVideo4", "urlPath4", 0, 0 );
             doReturn ( Arrays.asList (mockVideo1, mockVideo2, mockVideo3, mockVideo4)).when(videoRepository).findAll ();
 
             //Make the call to videoService
-            List<Video> mockVideoList = videoService.index ();
+            List<Video> mockVideoList = videoService.findAllVideos ();
 
             //Check assertions
             Assertions.assertEquals ( 4, mockVideoList.size (), "method should return 4 videos" );
@@ -77,7 +74,7 @@ public class TestVideoServices {
         @DisplayName ( "Test saveVideo" )
         public void testCreateVideo() {
         // Set up mock video
-        Video mockVideo = new Video (1L, "testVideo1", "urlPath");
+        Video mockVideo = new Video (1L, "testVideo1", "urlPath", 0, 0);
         doReturn ( mockVideo ).when ( videoRepository ).save ( mockVideo );
 
         // Make call to videoService

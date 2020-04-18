@@ -1,33 +1,32 @@
 package com.videolibrary.zipcode.fullstackapp.models;
 
-import org.hibernate.annotations.Nationalized;
-
 import javax.persistence.*;
 
 @Entity
 public class Video {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer thumbsUp;
     private Integer thumbsDown;
     private String videoTitle;
     private String videoPath;
+    private String initialTitle;
 
     public Video() {}
 
-    public Video(String videoTitle, String videoPath) {
-        this.thumbsUp = 0;
-        this.thumbsDown = 0;
+    public Video(String videoTitle, String videoPath, Integer thumbsUp, Integer thumbsDown) {
+        this.thumbsUp = thumbsUp;
+        this.thumbsDown = thumbsDown;
         this.videoTitle = videoTitle;
         this.videoPath = videoPath;
     }
 
-    public Video(Long id, String videoTitle, String videoPath) {
+    public Video(Long id, String videoTitle, String videoPath, Integer thumbsUp, Integer thumbsDown) {
         this.id = id;
-        this.thumbsUp = 0;
-        this.thumbsDown = 0;
+        this.thumbsUp = thumbsUp;
+        this.thumbsDown = thumbsDown;
         this.videoTitle = videoTitle;
         this.videoPath = videoPath;
     }
@@ -70,5 +69,13 @@ public class Video {
 
     public void setThumbsDown(Integer thumbsDown) {
         this.thumbsDown = thumbsDown;
+    }
+
+    public String getInitialTitle() {
+        return initialTitle;
+    }
+
+    public void setInitialTitle(String initialTitle) {
+        this.initialTitle = initialTitle;
     }
 }
