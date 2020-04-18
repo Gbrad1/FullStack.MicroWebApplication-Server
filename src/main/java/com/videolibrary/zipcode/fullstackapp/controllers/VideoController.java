@@ -75,24 +75,23 @@ public class VideoController {
         }) .orElse ( ResponseEntity.notFound ().build ());
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable long id) {
-        Optional<Video> currentVideo = service.findVideo (id);
-        return  currentVideo
-        .map(video -> {
-            try {
-                service.delete ( video.getId () );
-            } catch (Exception e) {
-                e.printStackTrace ();
+    @DeleteMapping("delete/{id}")
+    public boolean delete(@PathVariable long id) throws Exception {
+        Optional<Video> currentVideo = service.findVideo(id);
+        if (currentVideo.isPresent()) {
+            if (
+            service.deleteFile(currentVideo.get().getInitialTitle())
+                    .sdkHttpResponse().isSuccessful()) {
+                service.delete(id);
             }
-            return ResponseEntity.ok ().build ();
-        })
-          .orElse ( (ResponseEntity.notFound ().build ()) );
+        }
+        return true;
     }
 
     // Uploads the video to the aws bucket.
     @PostMapping("upload")
     public ResponseEntity<Video> uploadVideo(@RequestParam String videoName, @RequestParam("file") MultipartFile multipartFile) throws Exception {
+        System.out.println(videoName);
         Video tempVideo = service.saveVideo(videoName, multipartFile);
         if(tempVideo != null){
             return new ResponseEntity<>(tempVideo, HttpStatus.OK);

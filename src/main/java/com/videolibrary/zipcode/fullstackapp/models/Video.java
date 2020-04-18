@@ -12,6 +12,7 @@ public class Video {
     private Integer thumbsDown;
     private String videoTitle;
     private String videoPath;
+    private String initialTitle;
 
     public Video() {}
 
@@ -68,5 +69,13 @@ public class Video {
 
     public void setThumbsDown(Integer thumbsDown) {
         this.thumbsDown = thumbsDown;
+    }
+
+    public String getInitialTitle() {
+        return initialTitle;
+    }
+
+    public void setInitialTitle(String initialTitle) {
+        this.initialTitle = initialTitle;
     }
 }

@@ -70,6 +70,7 @@ public class VideoService {
         File file = convertMultiPartFile(multipartFile);
         Video video = new Video(videoName, multipartFile.getContentType(), 0, 0);
         String fileName = generateFileName(file.getName());
+        video.setInitialTitle(fileName);
         String fileUrl = endPointUrl + "/" + fileName;
         video.setVideoPath(fileUrl);
         if(uploadFile(file, fileName).isSuccessful()){
@@ -89,11 +90,12 @@ public class VideoService {
     }
 
     public boolean delete(Long videoId) throws Exception {
-        return videoRepository.deleteVideoById(videoId);
+        videoRepository.deleteById(videoId);
+        return true;
     }
 
     //stays the same
-    public DeleteObjectResponse deleteFile(String fileName, String videoPath) {
+    public DeleteObjectResponse deleteFile(String fileName) {
         DeleteObjectRequest deleteObjectResponse = DeleteObjectRequest.builder()
                 .bucket(s3client.getBucket()).key(fileName).build();
         return s3client.generateAwsS3Client().deleteObject(deleteObjectResponse);
