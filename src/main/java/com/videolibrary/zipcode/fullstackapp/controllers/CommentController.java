@@ -7,35 +7,54 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
 
 @RestController
 @CrossOrigin
 public class CommentController {
 
+    @Autowired
     private CommentService service;
 
-    @Autowired
-    public CommentController(CommentService service) {
-        this.service = service;
+    @GetMapping("/comments/{id}")
+    public ResponseEntity<Comment> showComment(@PathVariable Long id){
+        Optional<Comment> commentOptional = this.service.showComment(id);
+        ResponseEntity<Comment> response = commentOptional
+                .map(comment -> ResponseEntity.ok().body(comment))
+                .orElse(ResponseEntity.notFound().build());
+        return response;
     }
 
     @GetMapping("/comments")
-    public ResponseEntity<Iterable<Comment>> index() {
-        return new ResponseEntity<>(service.index(), HttpStatus.OK);
-    }
-
-    @GetMapping("/comments/{id}")
-    public ResponseEntity<Comment> show(@PathVariable Long id) {
-        return new ResponseEntity<>(service.show(id), HttpStatus.OK);
+    public ResponseEntity<Iterable<Comment>> showAll(){
+        return new ResponseEntity<>(service.showAll() , HttpStatus.OK);
     }
 
     @PostMapping("/comments")
-    public ResponseEntity<Comment> create(@RequestBody Comment comment) {
-        return new ResponseEntity<>(service.create(comment), HttpStatus.CREATED);
+    public ResponseEntity<Comment> create(@RequestBody Comment comment){
+
+        Comment newComment = this.service.create(comment);
+        try {
+            return ResponseEntity
+                    .created( new URI("/create" + newComment.getCommentId()))
+                    .body(newComment);
+        } catch (URISyntaxException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 
-    @DeleteMapping("/comments/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable long id) {
-        return new ResponseEntity<>(service.delete(id), HttpStatus.OK);
+    @DeleteMapping(value ="/comments/{commentId}")
+    public ResponseEntity<Boolean> deleteComment(@PathVariable Long commentId) {
+        return new ResponseEntity<>(service.deleteComment(commentId) , HttpStatus.OK);
+    }
+
+    @GetMapping("/comments/videos/{videoId}")
+    public ResponseEntity<List<String>> findCommentsByVideoId(@PathVariable Long videoId){
+        return new ResponseEntity<>(service.findByVideoId(videoId) , HttpStatus.OK);
     }
 }
