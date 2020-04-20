@@ -37,13 +37,6 @@ public class CommentTest {
     }
 
     @Test
-    public void setUserID(){
-        assertNull(comment.getCommentId());
-        comment.setUserId(Long.valueOf(1001));
-        assertEquals(Long.valueOf(1001) , comment.getUserId());
-    }
-
-    @Test
     public void setMessage() {
         assertNull(comment.getCommentId());
         comment.setMessage("First Comment");

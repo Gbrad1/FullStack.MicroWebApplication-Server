@@ -19,6 +19,7 @@ public class CommentService {
     public CommentService(CommentRepository commentRepo){
         this.commentRepo = commentRepo;
     }
+
     public Optional<Comment> showComment(Long id){
         return commentRepo.findById(id);
     }
@@ -45,8 +46,8 @@ public class CommentService {
         List<String> comments = new ArrayList();
         commentRepo.findByVideoId(videoId);
         for(Comment comment : commentRepo.findAll()){
-            if(comment.getVideoId().equals(videoId)){
-                comments.add(comment.getComment());
+            if(comment.getVideo().equals(videoId)){
+                comments.add(comment.getMessage());
             }
         }
         return comments;

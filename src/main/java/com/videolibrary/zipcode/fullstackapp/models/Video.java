@@ -1,19 +1,28 @@
 package com.videolibrary.zipcode.fullstackapp.models;
 
-import org.hibernate.annotations.Nationalized;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name="video")
 public class Video {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
     private Long id;
+    @Column(name="thumbs_up")
     private Integer thumbsUp;
+    @Column(name="thumbs_down")
     private Integer thumbsDown;
+    @Column(name="video_title")
     private String videoTitle;
+    @Column(name="video_path")
     private String videoPath;
+
+    @OneToMany
+    private List<Comment> comments;
 
     public Video() {}
 
@@ -30,6 +39,7 @@ public class Video {
         this.thumbsDown = 0;
         this.videoTitle = videoTitle;
         this.videoPath = videoPath;
+        this.comments = new ArrayList<>();
     }
 
     public Long getId() {
@@ -70,5 +80,13 @@ public class Video {
 
     public void setThumbsDown(Integer thumbsDown) {
         this.thumbsDown = thumbsDown;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

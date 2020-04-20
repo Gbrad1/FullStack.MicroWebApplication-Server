@@ -1,6 +1,7 @@
 package com.videolibrary.zipcode.fullstackapp.services;
 
 import com.videolibrary.zipcode.fullstackapp.models.Comment;
+import com.videolibrary.zipcode.fullstackapp.models.User;
 import com.videolibrary.zipcode.fullstackapp.models.Video;
 import com.videolibrary.zipcode.fullstackapp.repositories.CommentRepository;
 import com.videolibrary.zipcode.fullstackapp.repositories.VideoRepository;
@@ -41,7 +42,9 @@ public class CommentServiceTest {
     @Test
     @DisplayName("Test showComment Success")
     public void testFindByIdFound(){
-        Comment mockComment = new Comment(1L , "Test comment");
+        Video mockVideo = new Video("Test video", "url");
+        User mockUser = new User(1L, "John", "Doe");
+        Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
         doReturn(Optional.of(mockComment)).when(commentRepository).findById(1L);
         Optional<Comment> resultComment = commentService.showComment(1L);
         Assertions.assertTrue(resultComment.isPresent());
@@ -61,8 +64,12 @@ public class CommentServiceTest {
     @Test
     @DisplayName("Test showAll")
     public void testShowAll(){// Set up mock object and repository
-        Comment mockComment1 = new Comment(1L , "Test comment 1");
-        Comment mockComment2 = new Comment(2L , "Test comment 2");
+        Video mockVideo1 = new Video("Test video 1", "url");
+        User mockUser1 = new User(1L, "John", "Doe");
+        Comment mockComment1 = new Comment(mockVideo1, mockUser1,"Test comment");
+        Video mockVideo2 = new Video("Test video 2", "url");
+        User mockUser2 = new User(1L, "Johnson", "Smith");
+        Comment mockComment2 = new Comment(mockVideo2, mockUser2,"Test comment 2");
         doReturn(Arrays.asList(mockComment1,mockComment2)).when(commentRepository).findAll();
         List<Comment> commentsList = (List<Comment>) commentService.showAll();
         Assertions.assertEquals(2,commentsList.size());
@@ -72,8 +79,9 @@ public class CommentServiceTest {
     @Test
     @DisplayName("Test create")
     public void testCreate() throws Exception {
-        Comment mockComment = new Comment(1L , "Test comment 1");
         Video mockVideo = new Video ( 1L, "TestVideo", "urlPath");
+        User mockUser = new User(1L, "John", "Doe");
+        Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
         doReturn(mockVideo).when(videoRepository).save(mockVideo);
         doReturn(Optional.of(mockVideo)).when(videoService).findById(1L);
         doReturn(mockComment).when(commentRepository).save(mockComment);
@@ -85,7 +93,9 @@ public class CommentServiceTest {
     @Test
     @DisplayName("Test delete comment")
     public void testDeleteComment(){
-        Comment mockComment = new Comment(1L, 1L,"Test comment 1");
+        Video mockVideo = new Video ( 1L, "TestVideo", "urlPath");
+        User mockUser = new User(1L,"John", "Doe");
+        Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
         doReturn(mockComment).when(commentRepository).save(mockComment);
         doReturn(mockComment).when(commentRepository).getOne(1L);
         Boolean deleted = commentService.deleteComment(1L);

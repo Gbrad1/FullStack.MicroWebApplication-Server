@@ -10,23 +10,22 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
 public class CommentController {
 
+    @Autowired
     private CommentService service;
 
-    @Autowired
-    public CommentController(CommentService service){
-        this.service = service;
-    }
-
     @GetMapping("/comments/{id}")
-    public ResponseEntity<?> showComment(@PathVariable Long id){
-        return this.service.showComment(id)
+    public ResponseEntity<Comment> showComment(@PathVariable Long id){
+        Optional<Comment> commentOptional = this.service.showComment(id);
+        ResponseEntity<Comment> response = commentOptional
                 .map(comment -> ResponseEntity.ok().body(comment))
                 .orElse(ResponseEntity.notFound().build());
+        return response;
     }
 
     @GetMapping("/comments")
@@ -53,7 +52,7 @@ public class CommentController {
         return new ResponseEntity<>(service.deleteComment(commentId) , HttpStatus.OK);
     }
 
-    @GetMapping("/comments/{videoId}")
+    @GetMapping("/comments/videos/{videoId}")
     public ResponseEntity<List<String>> findCommentsByVideoId(@PathVariable Long videoId){
         return new ResponseEntity<>(service.findByVideoId(videoId) , HttpStatus.OK);
     }
