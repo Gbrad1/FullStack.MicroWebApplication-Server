@@ -1,35 +1,75 @@
 package com.videolibrary.zipcode.fullstackapp.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
+@Table(name="comment")
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String comment;
+    @GeneratedValue( strategy = GenerationType.AUTO)
+    @Column(name="comment_id")
+    private Long commentId;
 
-    public Comment() {}
+    @NotEmpty(message = "Comment message cannot be empty!")
+    @Column(name="message")
+    private String message;
 
-    public Comment(String comment) { this.comment = comment; }
+    @ManyToOne
+    @JoinColumn(name="video_id", referencedColumnName = "id")
+    private Video video;
 
-    public long getId() {
-        return id;
+    @OneToOne
+    @JoinColumn(name="user_id", referencedColumnName = "user_id")
+    private User user;
+
+    public Comment() { }
+
+    public Comment(Long commentID, Video video, User user , String message){
+        this.commentId = commentID;
+        this.video = video;
+        this.user = user;
+        this.message = message;
+
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Comment(Video video, User user , String message){
+        this.video = video;
+        this.user = user;
+        this.message = message;
     }
 
-    public String getComment() {
-        return comment;
+    public Long getCommentId() {
+        return commentId;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Video getVideo() {
+        return video;
+    }
+
+    public void setVideo(Video video) {
+        this.video = video;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
