@@ -22,32 +22,42 @@ public class UserService {
         return userRepository.save(u);
     }
 
-    public Optional<User> show(Long id) {
+    public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
-    public Iterable<User> index() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
     public boolean delete(Long id) {
-        userRepository.deleteById(id);
-        return true;
+        if (findById(id).isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public User update(Long id, User newUser) {
-        User user = userRepository.getUserById(id);
+        User user = userRepository.getOne(id);
         user.setFirstName(newUser.getFirstName());
         user.setLastName(newUser.getLastName());
         create(user);
         return user;
     }
 
-    public List<User> create(List<User> users) {
-        for (User u : users) {
-            userRepository.save(u);
-        }
-        return users;
+    public User updateFirstName(Long id, String firstName) {
+        User user = userRepository.getOne(id);
+        user.setFirstName(firstName);
+        create(user);
+        return user;
+    }
+
+    public User updateLastName(Long id, String lastName) {
+        User user = userRepository.getOne(id);
+        user.setLastName(lastName);
+        create(user);
+        return user;
     }
 
 }

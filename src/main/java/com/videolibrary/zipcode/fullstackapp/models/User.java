@@ -1,31 +1,32 @@
 package com.videolibrary.zipcode.fullstackapp.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-@Table(name="user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="user_id")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long user_id;
     private String firstName;
     private String lastName;
 
     public User() {}
 
     public User(Long id, String firstName, String lastName) {
-        this.id = id;
+        this.user_id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUser_Id() {
+        return user_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUser_Id(Long id) {
+        this.user_id = id;
     }
 
     public String getFirstName() {

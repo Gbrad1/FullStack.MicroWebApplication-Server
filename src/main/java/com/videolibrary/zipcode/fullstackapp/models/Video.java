@@ -9,7 +9,7 @@ import java.util.List;
 public class Video {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
     @Column(name="thumbs_up")
@@ -20,23 +20,24 @@ public class Video {
     private String videoTitle;
     @Column(name="video_path")
     private String videoPath;
+    private String initialTitle;
 
     @OneToMany
     private List<Comment> comments;
 
     public Video() {}
 
-    public Video(String videoTitle, String videoPath) {
-        this.thumbsUp = 0;
-        this.thumbsDown = 0;
+    public Video(String videoTitle, String videoPath, Integer thumbsUp, Integer thumbsDown) {
+        this.thumbsUp = thumbsUp;
+        this.thumbsDown = thumbsDown;
         this.videoTitle = videoTitle;
         this.videoPath = videoPath;
     }
 
-    public Video(Long id, String videoTitle, String videoPath) {
+    public Video(Long id, String videoTitle, String videoPath, Integer thumbsUp, Integer thumbsDown) {
         this.id = id;
-        this.thumbsUp = 0;
-        this.thumbsDown = 0;
+        this.thumbsUp = thumbsUp;
+        this.thumbsDown = thumbsDown;
         this.videoTitle = videoTitle;
         this.videoPath = videoPath;
         this.comments = new ArrayList<>();
@@ -80,6 +81,14 @@ public class Video {
 
     public void setThumbsDown(Integer thumbsDown) {
         this.thumbsDown = thumbsDown;
+    }
+
+    public String getInitialTitle() {
+        return initialTitle;
+    }
+
+    public void setInitialTitle(String initialTitle) {
+        this.initialTitle = initialTitle;
     }
 
     public List<Comment> getComments() {
