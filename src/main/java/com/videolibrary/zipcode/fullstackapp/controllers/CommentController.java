@@ -34,9 +34,8 @@ public class CommentController {
         return new ResponseEntity<>(service.showAll() , HttpStatus.OK);
     }
 
-    @PostMapping("/comments")
+    @PostMapping("/comments/{id}")
     public ResponseEntity<Comment> create(@RequestBody Comment comment){
-
         Comment newComment = this.service.create(comment);
         try {
             return ResponseEntity

@@ -1,6 +1,7 @@
 package com.videolibrary.zipcode.fullstackapp.services;
 
 import com.videolibrary.zipcode.fullstackapp.aws.AmazonClient;
+import com.videolibrary.zipcode.fullstackapp.models.Comment;
 import com.videolibrary.zipcode.fullstackapp.models.Video;
 
 import com.videolibrary.zipcode.fullstackapp.repositories.VideoRepository;
@@ -101,8 +102,14 @@ public class VideoService {
         return s3client.generateAwsS3Client().deleteObject(deleteObjectResponse);
     }
 
-
     public String generateFileName(String fileName){
         return new Date().getTime() + "-" + fileName.replace(" ", "_");
+    }
+
+    public void commentOnVideo(Comment comment, Long id) {
+        Video video = videoRepository.getVideoById(id);
+        if (video != null) {
+            video.addComment(comment);
+        }
     }
 }

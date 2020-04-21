@@ -1,6 +1,8 @@
 package com.videolibrary.zipcode.fullstackapp.controllers;
 
+import com.videolibrary.zipcode.fullstackapp.models.Comment;
 import com.videolibrary.zipcode.fullstackapp.models.Video;
+import com.videolibrary.zipcode.fullstackapp.services.CommentService;
 import com.videolibrary.zipcode.fullstackapp.services.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public class VideoController {
 
     private VideoService service;
+    private CommentService commentService;
+    private Comment comment;
 
     @Autowired
     public VideoController(VideoService service) {
@@ -63,7 +67,6 @@ public class VideoController {
                     video.setThumbsDown (v.getThumbsDown ());
                     video.setVideoTitle (v.getVideoTitle ());
                     video.setVideoPath (v.getVideoPath ());
-
             try {
                 return ResponseEntity
                         .ok ()
@@ -94,6 +97,16 @@ public class VideoController {
         System.out.println(videoName);
         Video tempVideo = service.saveVideo(videoName, multipartFile);
         if(tempVideo != null){
+            return new ResponseEntity<>(tempVideo, HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
+    }
+
+    @PutMapping("comment/{id}")
+    public ResponseEntity<?> commentOnVideo(@RequestParam Long id, @RequestBody Comment commentText) {
+        Optional<Video> tempVideo = service.findVideo(id);
+        if (tempVideo.isPresent()) {
+            service.commentOnVideo(commentText, id);
             return new ResponseEntity<>(tempVideo, HttpStatus.OK);
         } else
             return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);

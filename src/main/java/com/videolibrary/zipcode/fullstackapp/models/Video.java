@@ -22,7 +22,7 @@ public class Video {
     private String videoPath;
     private String initialTitle;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Comment> comments;
 
     public Video() {}
@@ -97,5 +97,9 @@ public class Video {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 }
