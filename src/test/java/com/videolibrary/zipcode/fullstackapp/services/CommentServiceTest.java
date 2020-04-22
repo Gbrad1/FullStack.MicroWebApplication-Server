@@ -85,7 +85,7 @@ public class CommentServiceTest {
         doReturn(mockVideo).when(videoRepository).save(mockVideo);
         doReturn(Optional.of(mockVideo)).when(videoService).findVideo(1L);
         doReturn(mockComment).when(commentRepository).save(mockComment);
-        Comment resultComment = commentService.create(mockComment);
+        Comment resultComment = commentService.create(1L,mockComment);
         Assertions.assertNotNull(resultComment);
     }
 

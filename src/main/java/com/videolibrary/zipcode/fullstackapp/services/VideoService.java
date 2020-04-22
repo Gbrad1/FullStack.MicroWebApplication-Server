@@ -79,6 +79,11 @@ public class VideoService {
             return null;
     }
 
+    //basic save
+    public Video basicSaveVideo(Video video) throws Exception {
+        return videoRepository.save(video);
+    }
+
     //stays the same
     public SdkHttpResponse uploadFile(File file, String fileName) throws S3Exception,
             AwsServiceException, SdkClientException, URISyntaxException, FileNotFoundException {

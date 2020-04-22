@@ -42,7 +42,7 @@ public class CommentControllerTest {
     public void testShowCommentFound() throws Exception{
         Video mockVideo = new Video("Test video", "url",0,0);
         User mockUser = new User(1L, "John", "Doe");
-        Comment mockComment = new Comment(1L, mockVideo, mockUser,"Test comment");
+        Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
         Optional<Comment> commentOptional = Optional.of(mockComment);
         doReturn(commentOptional).when(commentService).showComment(1L);
         mockMvc.perform(get("/comments/{id}",1))
@@ -70,7 +70,7 @@ public class CommentControllerTest {
     public void testShowAllComments() throws Exception{
         Video mockVideo1 = new Video("Test video 1", "url", 0,0);
         User mockUser1 = new User(1L, "John", "Doe");
-        Comment mockComment1 = new Comment(1L, mockVideo1, mockUser1,"Test comment");
+        Comment mockComment1 = new Comment(mockVideo1, mockUser1,"Test comment");
         Video mockVideo2 = new Video("Test video 2", "url",0,0);
         User mockUser2 = new User(2L, "Johnson", "Smith");
         Comment mockComment2 = new Comment(mockVideo2, mockUser2,"Test comment 2");
@@ -98,9 +98,8 @@ public class CommentControllerTest {
         User mockUser = new User(1L, "John", "Doe");
         Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
 
-        given(commentService.create(mockComment)).willReturn(mockComment);
+        given(commentService.create(mockVideo.getId(), mockComment)).willReturn(mockComment);
         mockMvc.perform(post("/comments/create")
                 .contentType(MediaType.APPLICATION_JSON));
     }
-
 }
