@@ -110,6 +110,7 @@ public class VideoService {
         Video video = videoRepository.getVideoById(id);
         if (video != null) {
             video.addComment(comment);
+            videoRepository.save(video);
         }
     }
 }

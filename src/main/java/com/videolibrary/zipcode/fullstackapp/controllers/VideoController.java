@@ -103,7 +103,7 @@ public class VideoController {
     }
 
     @PutMapping("comment/{id}")
-    public ResponseEntity<?> commentOnVideo(@RequestParam Long id, @RequestBody Comment commentText) {
+    public ResponseEntity<?> commentOnVideo(@PathVariable Long id, @RequestBody Comment commentText) {
         Optional<Video> tempVideo = service.findVideo(id);
         if (tempVideo.isPresent()) {
             service.commentOnVideo(commentText, id);

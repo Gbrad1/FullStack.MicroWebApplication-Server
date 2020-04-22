@@ -31,7 +31,6 @@ public class Comment {
         this.video = video;
         this.user = user;
         this.message = message;
-
     }
 
     public Comment(Video video, User user , String message){
