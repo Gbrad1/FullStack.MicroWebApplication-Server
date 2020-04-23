@@ -44,7 +44,7 @@ public class CommentControllerTest {
     @Test
     @DisplayName("Test showById Success")
     public void testShowCommentFound() throws Exception{
-        Video mockVideo = new Video(1L, "Test video", "url");
+        Video mockVideo = new Video(1L, 0, 0,"Test video", "url");
         User mockUser = new User(1L, "John", "Doe");
         Comment mockComment = new Comment(1L, mockVideo, mockUser,"Test comment");
         Optional<Comment> commentOptional = Optional.of(mockComment);
@@ -72,10 +72,10 @@ public class CommentControllerTest {
     @Test
     @DisplayName("Test findAll")
     public void testShowAllComments() throws Exception{
-        Video mockVideo1 = new Video(1L, "Test video 1", "url");
+        Video mockVideo1 = new Video(1L, 0, 0, "Test video 1", "url");
         User mockUser1 = new User(1L, "John", "Doe");
         Comment mockComment1 = new Comment(1L, mockVideo1, mockUser1,"Test comment");
-        Video mockVideo2 = new Video("Test video 2", "url");
+        Video mockVideo2 = new Video(0,0,"Test video 2", "url");
         User mockUser2 = new User(2L, "Johnson", "Smith");
         Comment mockComment2 = new Comment(mockVideo2, mockUser2,"Test comment 2");
 
@@ -98,7 +98,7 @@ public class CommentControllerTest {
     @Test
     @DisplayName("Test create")
     public void testCreateComment() throws Exception{
-        Video mockVideo = new Video(1L, "Test video", "url");
+        Video mockVideo = new Video(1L, 0, 0,"Test video", "url");
         User mockUser = new User(1L, "John", "Doe");
         Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
 

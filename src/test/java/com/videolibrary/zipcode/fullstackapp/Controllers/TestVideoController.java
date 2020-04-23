@@ -132,11 +132,9 @@ public class TestVideoController {
                 .andExpect(status ().isNotFound ());
     }
 
-
-
     @Test
-    @DisplayName ( ("DELETE /video/1 - Success") )
-    public void deleteVideo() throws Exception {
+    @DisplayName ("DELETE /video/1 - Success" )
+    public void testDeleteVideo() throws Exception {
         //Create mock video
         Video mockVideo = new Video (1, 1, "TestVideo1", "urlPath");
 
@@ -145,10 +143,9 @@ public class TestVideoController {
         doReturn ( true ).when ( mockVideoService ).delete ( 1L );
 
         //Execute the delete request
-        mockMvc.perform ( delete ( "/video/delete/{id}", 1 ) )
+        mockMvc.perform ( delete ( "/delete/{id}", 1L ) )
                 .andExpect ( status ().isOk () );
     }
-
 
 
     public static String asJsonString(final Object obj) {
