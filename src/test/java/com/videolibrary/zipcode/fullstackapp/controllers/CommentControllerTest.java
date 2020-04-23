@@ -4,7 +4,6 @@ import com.videolibrary.zipcode.fullstackapp.models.Comment;
 import com.videolibrary.zipcode.fullstackapp.models.User;
 import com.videolibrary.zipcode.fullstackapp.models.Video;
 import com.videolibrary.zipcode.fullstackapp.services.CommentService;
-import com.videolibrary.zipcode.fullstackapp.services.VideoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,25 +34,22 @@ public class CommentControllerTest {
     @MockBean
     private CommentService commentService;
 
-    @MockBean
-    private VideoService videoService;
-
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     @DisplayName("Test showById Success")
     public void testShowCommentFound() throws Exception{
-        Video mockVideo = new Video(1L, "Test video", "url", 0, 0);
+        Video mockVideo = new Video("Test video", "url",0,0);
         User mockUser = new User(1L, "John", "Doe");
-        Comment mockComment = new Comment(1L, mockVideo, mockUser,"Test comment");
+        Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
         Optional<Comment> commentOptional = Optional.of(mockComment);
         doReturn(commentOptional).when(commentService).showComment(1L);
         mockMvc.perform(get("/comments/{id}",1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.commentId",is(1)))
-                .andExpect(jsonPath("$.user.id",is(1)))
+                .andExpect(jsonPath("$.user_id",is(1)))
                 .andExpect(jsonPath("$.message",is("Test comment")));
     }
 
@@ -72,10 +68,10 @@ public class CommentControllerTest {
     @Test
     @DisplayName("Test findAll")
     public void testShowAllComments() throws Exception{
-        Video mockVideo1 = new Video(1L, "Test video 1", "url", 0, 0);
+        Video mockVideo1 = new Video("Test video 1", "url", 0,0);
         User mockUser1 = new User(1L, "John", "Doe");
-        Comment mockComment1 = new Comment(1L, mockVideo1, mockUser1,"Test comment");
-        Video mockVideo2 = new Video("Test video 2", "url", 0, 0);
+        Comment mockComment1 = new Comment(mockVideo1, mockUser1,"Test comment");
+        Video mockVideo2 = new Video("Test video 2", "url",0,0);
         User mockUser2 = new User(2L, "Johnson", "Smith");
         Comment mockComment2 = new Comment(mockVideo2, mockUser2,"Test comment 2");
 
@@ -87,24 +83,23 @@ public class CommentControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
                 .andExpect(jsonPath("$.commentId",is(1)))
-                .andExpect(jsonPath("$.user.Id",is(1)))
+                .andExpect(jsonPath("$.user_id",is(1)))
                 .andExpect(jsonPath("$.message",is("Test comment 1")))
 
                 .andExpect(jsonPath("$[1].commentId",is(2)))
-                .andExpect(jsonPath("$[1].user.Id",is(2)))
+                .andExpect(jsonPath("$[1].user_id",is(2)))
                 .andExpect(jsonPath("$[1].message",is("Test comment 2")));
     }
 
     @Test
     @DisplayName("Test create")
     public void testCreateComment() throws Exception{
-        Video mockVideo = new Video(1L, "Test video", "url", 0, 0);
+        Video mockVideo = new Video("Test video", "url",0,0);
         User mockUser = new User(1L, "John", "Doe");
         Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
 
-        given(commentService.create(mockComment)).willReturn(mockComment);
+        given(commentService.create(mockVideo.getId(), mockComment)).willReturn(mockComment);
         mockMvc.perform(post("/comments/create")
                 .contentType(MediaType.APPLICATION_JSON));
     }
-
 }

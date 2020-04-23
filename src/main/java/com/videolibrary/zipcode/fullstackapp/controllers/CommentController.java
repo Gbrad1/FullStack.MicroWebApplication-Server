@@ -29,14 +29,16 @@ public class CommentController {
         return response;
     }
 
-    @GetMapping("/comments")
+    @GetMapping("/comments/")
     public ResponseEntity<Iterable<Comment>> showAll(){
         return new ResponseEntity<>(service.showAll() , HttpStatus.OK);
     }
 
-    @PostMapping("/comments/{id}")
-    public ResponseEntity<Comment> create(@RequestBody Comment comment){
-        Comment newComment = this.service.create(comment);
+
+    @PostMapping("/comments/create/{videoId}")
+    public ResponseEntity<Comment> create(@PathVariable Long videoId, @RequestBody Comment comment) throws Exception {
+        Comment newComment = this.service.create(videoId,comment);
+
         try {
             return ResponseEntity
                     .created( new URI("/create" + newComment.getCommentId()))
@@ -44,7 +46,6 @@ public class CommentController {
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
     @DeleteMapping(value ="/comments/{commentId}")
