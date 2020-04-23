@@ -1,14 +1,17 @@
 package com.videolibrary.zipcode.fullstackapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 
 @Entity
 @Table(name="comment")
 public class Comment {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     @Column(name="comment_id")
     private Long commentId;
 
@@ -16,13 +19,16 @@ public class Comment {
     @Column(name="message")
     private String message;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="video_id", referencedColumnName = "id")
+    @JoinColumn(name="id")
     private Video video;
 
     @OneToOne
-    @JoinColumn(name="user_id", referencedColumnName = "user_id")
+    @JoinColumn(name="user_id")
     private User user;
+
+    private Date dateCreated;
 
     public Comment() { }
 
@@ -31,7 +37,6 @@ public class Comment {
         this.video = video;
         this.user = user;
         this.message = message;
-
     }
 
     public Comment(Video video, User user , String message){
@@ -71,5 +76,13 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

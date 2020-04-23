@@ -68,6 +68,7 @@ public class CommentServiceTest {
         User mockUser1 = new User(1L, "John", "Doe");
         Comment mockComment1 = new Comment(mockVideo1, mockUser1,"Test comment");
         Video mockVideo2 = new Video(0,0,"Test video 2", "url");
+
         User mockUser2 = new User(1L, "Johnson", "Smith");
         Comment mockComment2 = new Comment(mockVideo2, mockUser2,"Test comment 2");
         doReturn(Arrays.asList(mockComment1,mockComment2)).when(commentRepository).findAll();
@@ -79,13 +80,14 @@ public class CommentServiceTest {
     @Test
     @DisplayName("Test create")
     public void testCreate() throws Exception {
+
         Video mockVideo = new Video ( 1L, 0,0,"TestVideo", "urlPath");
         User mockUser = new User(1L, "John", "Doe");
         Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");
         doReturn(mockVideo).when(videoRepository).save(mockVideo);
         doReturn(Optional.of(mockVideo)).when(videoService).findVideo (1L);
         doReturn(mockComment).when(commentRepository).save(mockComment);
-        Comment resultComment = commentService.create(mockComment);
+        Comment resultComment = commentService.create(1L,mockComment);
         Assertions.assertNotNull(resultComment);
     }
 
@@ -93,6 +95,7 @@ public class CommentServiceTest {
     @Test
     @DisplayName("Test delete comment")
     public void testDeleteComment(){
+
         Video mockVideo = new Video ( 1L, 0,0,"TestVideo", "urlPath");
         User mockUser = new User(1L,"John", "Doe");
         Comment mockComment = new Comment(mockVideo, mockUser,"Test comment");

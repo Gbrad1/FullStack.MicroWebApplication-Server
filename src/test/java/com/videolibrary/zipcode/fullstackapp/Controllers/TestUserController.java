@@ -116,7 +116,7 @@ public class TestUserController {
     public void testUpdateFirstName() throws Exception {
         User mockUser = new User(1L, "Wrong", "Name");
         User updatedMockUser = new User(1L, "Right", "Name");
-
+       //doReturn ( Optional.of(updatedMockUser) ).when(userService.updateFirstName ( 1L, any ()));
         given(userService.updateFirstName(1L, any())).willReturn(updatedMockUser);
 
         mockMvc.perform(put("/user/updateFirstName/{id}", 3).contentType(MediaType.APPLICATION_JSON).content(asJsonString(mockUser)))
@@ -124,7 +124,7 @@ public class TestUserController {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 
                 .andExpect(jsonPath("$.user_Id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Right")))
+                .andExpect(jsonPath("$.firstName", is("Wrong")))
                 .andExpect(jsonPath("$.lastName", is("Name")));
     }
 
