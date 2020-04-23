@@ -36,8 +36,11 @@ public class CommentController {
 
 
     @PostMapping("/comments/create/{videoId}")
-    public ResponseEntity<Comment> create(@PathVariable Long videoId, @RequestBody Comment comment) throws Exception {
-        Comment newComment = this.service.create(videoId,comment);
+    public ResponseEntity<Comment> create(@PathVariable Long videoId, @RequestBody String comment) throws Exception {
+        System.out.println(comment);
+        Comment tempComment = new Comment();
+        tempComment.setMessage(comment);
+        Comment newComment = this.service.create(videoId, tempComment);
 
         try {
             return ResponseEntity
