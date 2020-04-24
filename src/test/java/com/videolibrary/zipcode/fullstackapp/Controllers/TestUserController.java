@@ -6,10 +6,12 @@ import com.videolibrary.zipcode.fullstackapp.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -91,7 +93,7 @@ public class TestUserController {
     }
 
     @Test
-    @DisplayName("PUT /User/update/3 - Updated")
+    @DisplayName("PUT /user/3 - Updated")
     public void testPutUser() throws Exception {
         User mockUser = new User(3L, "Wrong", "Name");
         User updatedMockUser = new User(3L, "Right", "Name");
@@ -100,31 +102,47 @@ public class TestUserController {
         * the same as the one that we are mocking. The comparison uses the address which is different just like hashcoding.
         * We pass it any to bypass the comparison of hashcodes.
         * */
-        given(userService.update(1L, mockUser)).willReturn(updatedMockUser);
-
-        mockMvc.perform(put("/user/update/{id}", 3).contentType(MediaType.APPLICATION_JSON).content(asJsonString(mockUser)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-
-                .andExpect(jsonPath("$.user_Id", is(3)))
-                .andExpect(jsonPath("$.firstName", is("Right")))
-                .andExpect(jsonPath("$.lastName", is("Name")));
+// //       given(userService.update(1L, mockUser)).willReturn(updatedMockUser);
+//        doReturn ( Optional.of ( updatedMockUser ) ).when ( userService ).findById ( 3L );
+//        doReturn ( updatedMockUser ).when ( userService ).update(3L, any() );
+//
+//        mockMvc.perform(put("/user/update/{id}", 3)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header ( HttpHeaders.IF_MATCH, 3 )
+//                .content(asJsonString(mockUser)))
+//
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+//
+//                .andExpect ( header().string (HttpHeaders.LOCATION, "/user/3") )
+//
+//                .andExpect(jsonPath("$.user_Id", is(3)))
+//                .andExpect(jsonPath("$.firstName", is("Right")))
+//                .andExpect(jsonPath("$.lastName", is("Name")));
+            Mockito.when(userService.update ( 3L,  ))
     }
 
     @Test
     @DisplayName("PUT /user/updateFirstName/1 - updated first name")
     public void testUpdateFirstName() throws Exception {
-        User mockUser = new User(1L, "Wrong", "Name");
+        User mockUser = new User(1L,"Wrong", "Name");
         User updatedMockUser = new User(1L, "Right", "Name");
-       //doReturn ( Optional.of(updatedMockUser) ).when(userService.updateFirstName ( 1L, any ()));
-        given(userService.updateFirstName(1L, any())).willReturn(updatedMockUser);
+//        given(userService.updateFirstName(1L, any())).willReturn(updatedMockUser);
+        doReturn ( Optional.of(updatedMockUser) ).when ( userService ).findById ( 1L );
+        doReturn ( updatedMockUser ).when ( userService ).updateFirstName ( 1L, "Right" );
 
-        mockMvc.perform(put("/user/updateFirstName/{id}", 3).contentType(MediaType.APPLICATION_JSON).content(asJsonString(mockUser)))
+        mockMvc.perform(put("/user/updateFirstName/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header( HttpHeaders.IF_MATCH, 1 )
+                .content(asJsonString ( mockUser )))
+
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 
+                .andExpect(header ().string (HttpHeaders.LOCATION, "/user/1"))
+
                 .andExpect(jsonPath("$.user_Id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Wrong")))
+                .andExpect(jsonPath("$.firstName", is("Right")))
                 .andExpect(jsonPath("$.lastName", is("Name")));
     }
 
@@ -134,7 +152,7 @@ public class TestUserController {
         User mockUser = new User(1L, "Name", "Wrong");
         User updatedMockUser = new User(1L, "Name", "Right");
 
-        given(userService.updateLastName(1L, any())).willReturn(updatedMockUser);
+        given(userService.updateLastName(Mockito.anyLong (), Mockito.anyString ())).willReturn(updatedMockUser);
 
         mockMvc.perform(put("/user/updateFirstName/{id}", 3).contentType(MediaType.APPLICATION_JSON).content(asJsonString(mockUser)))
                 .andExpect(status().isOk())

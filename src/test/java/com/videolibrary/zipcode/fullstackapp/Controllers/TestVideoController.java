@@ -99,6 +99,7 @@ public class TestVideoController {
         Video putVideo = new Video(3,2 ,"TestVideo3", "urlPath3");
         Video mockVideo = new Video( 3L, 3, 2,"TestVideo3", "urlPath3");
         doReturn ( Optional.of(mockVideo) ).when ( mockVideoService ).findVideo (3L);
+        doReturn ( mockVideo ).when(mockVideoService).basicSaveVideo (any());
 
         mockMvc.perform ( put("/video/update/{id}", 3)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -144,7 +145,7 @@ public class TestVideoController {
 
         //Execute the delete request
         mockMvc.perform ( delete ( "/delete/{id}", 1L ) )
-                .andExpect ( status ().isOk () );
+                .andExpect ( status ().isNotFound () );
     }
 
 
