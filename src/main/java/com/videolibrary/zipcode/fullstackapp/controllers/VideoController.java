@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/video/")
-@CrossOrigin(origins = {"http://vidstack.herokuapp.com/", "http://localhost:4200"})
+@CrossOrigin(origins = {"https://vidstack.herokuapp.com/", "http://localhost:4200"})
 public class VideoController {
 
     private VideoService service;
