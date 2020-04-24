@@ -1,5 +1,7 @@
 package com.videolibrary.zipcode.fullstackapp.models;
 
+import org.hibernate.annotations.Nationalized;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +29,14 @@ public class Video {
 
     public Video() {}
 
-    public Video(String videoTitle, String videoPath, Integer thumbsUp, Integer thumbsDown) {
+    public Video(Integer thumbsUp, Integer thumbsDown, String videoTitle, String videoPath) {
         this.thumbsUp = thumbsUp;
         this.thumbsDown = thumbsDown;
         this.videoTitle = videoTitle;
         this.videoPath = videoPath;
     }
 
-    public Video(Long id, String videoTitle, String videoPath, Integer thumbsUp, Integer thumbsDown) {
+    public Video(Long id, Integer thumbsUp, Integer thumbsDown, String videoTitle, String videoPath) {
         this.id = id;
         this.thumbsUp = thumbsUp;
         this.thumbsDown = thumbsDown;

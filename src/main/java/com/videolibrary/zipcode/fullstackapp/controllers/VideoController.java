@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
+
 @RequestMapping("/video/")
 public class VideoController {
 
@@ -75,7 +76,7 @@ public class VideoController {
         }) .orElse ( ResponseEntity.notFound ().build ());
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public boolean delete(@PathVariable long id) throws Exception {
         Optional<Video> currentVideo = service.findVideo(id);
         if (currentVideo.isPresent()) {

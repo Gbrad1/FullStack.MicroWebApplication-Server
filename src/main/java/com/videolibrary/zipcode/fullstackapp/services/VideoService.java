@@ -68,7 +68,7 @@ public class VideoService {
     public Video saveVideo(String videoName, MultipartFile multipartFile) throws Exception{
         String endPointUrl = "https:/videolibrary-video-bucket.s3.amazonaws.com";
         File file = convertMultiPartFile(multipartFile);
-        Video video = new Video(videoName, multipartFile.getContentType(), 0, 0);
+        Video video = new Video(0,0,videoName, multipartFile.getContentType());
         String fileName = generateFileName(file.getName());
         video.setInitialTitle(fileName);
         String fileUrl = endPointUrl + "/" + fileName;
