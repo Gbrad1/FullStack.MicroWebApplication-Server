@@ -13,7 +13,7 @@ import java.util.Optional;
 
 
 @RestController
-@CrossOrigin(origins = {"https://vidstack.herokuapp.com/", "http://localhost:4200"})
+@CrossOrigin(origins = {"http://vidstack.herokuapp.com/", "http://localhost:4200"})
 public class CommentController {
 
     @Autowired
