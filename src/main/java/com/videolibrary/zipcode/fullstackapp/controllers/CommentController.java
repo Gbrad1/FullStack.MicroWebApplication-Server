@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -57,7 +56,7 @@ public class CommentController {
     }
 
     @GetMapping("/comments/videos/{videoId}")
-    public ResponseEntity<List<String>> findCommentsByVideoId(@PathVariable Long videoId){
+    public ResponseEntity<?> findCommentsByVideoId(@PathVariable Long videoId){
         return new ResponseEntity<>(service.findByVideoId(videoId) , HttpStatus.OK);
     }
 }
