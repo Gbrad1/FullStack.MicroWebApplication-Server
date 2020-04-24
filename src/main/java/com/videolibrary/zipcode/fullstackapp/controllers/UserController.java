@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/user/")
-@CrossOrigin(origins = {"http://vidstack.herokuapp.com/", "http://localhost:4200"})
+@CrossOrigin(origins = {"http://vidstack.herokuapp.com", "http://localhost:4200"})
 public class UserController {
 
     private UserService service;
