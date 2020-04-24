@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Optional;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = {"http://vidstack.herokuapp.com", "http://localhost:4200"})
 public class CommentController {
 
     @Autowired
@@ -34,9 +33,14 @@ public class CommentController {
         return new ResponseEntity<>(service.showAll() , HttpStatus.OK);
     }
 
+
     @PostMapping("/comments/create/{videoId}")
-    public ResponseEntity<Comment> create(@PathVariable Long videoId, @RequestBody Comment comment) throws Exception {
-        Comment newComment = this.service.create(videoId,comment);
+    public ResponseEntity<Comment> create(@PathVariable Long videoId, @RequestBody String comment) throws Exception {
+        System.out.println(comment);
+        Comment tempComment = new Comment();
+        tempComment.setMessage(comment);
+        Comment newComment = this.service.create(videoId, tempComment);
+
         try {
             return ResponseEntity
                     .created( new URI("/create" + newComment.getCommentId()))
@@ -52,7 +56,7 @@ public class CommentController {
     }
 
     @GetMapping("/comments/videos/{videoId}")
-    public ResponseEntity<List<String>> findCommentsByVideoId(@PathVariable Long videoId){
+    public ResponseEntity<?> findCommentsByVideoId(@PathVariable Long videoId){
         return new ResponseEntity<>(service.findByVideoId(videoId) , HttpStatus.OK);
     }
 }

@@ -85,4 +85,15 @@ public class Comment {
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "commentId=" + commentId +
+                ", message='" + message + '\'' +
+                ", video=" + video +
+                ", user=" + user +
+                ", dateCreated=" + dateCreated +
+                '}';
+    }
 }

@@ -119,7 +119,6 @@ public class TestUserController {
 //                .andExpect(jsonPath("$.user_Id", is(3)))
 //                .andExpect(jsonPath("$.firstName", is("Right")))
 //                .andExpect(jsonPath("$.lastName", is("Name")));
-            Mockito.when(userService.update ( 3L,  ))
     }
 
     @Test
