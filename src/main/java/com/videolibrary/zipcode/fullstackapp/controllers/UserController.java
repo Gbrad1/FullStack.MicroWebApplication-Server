@@ -11,8 +11,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/user/")
+@CrossOrigin(origins = {"http://vidstack.herokuapp.com/", "http://localhost:4200"})
 public class UserController {
 
     private UserService service;
