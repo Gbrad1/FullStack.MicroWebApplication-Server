@@ -15,8 +15,8 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/video/")
+@CrossOrigin(origins = {"http://vidstack.herokuapp.com/", "http://localhost:4200"})
 public class VideoController {
 
     private VideoService service;
